@@ -1,0 +1,1473 @@
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:47:33 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:48:41 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:48:41 - travl4u_travel_crawler - WARNING - 未提供登入帳號或密碼，跳過登入流程
+2025-08-17 14:55:58 - travl4u_travel_crawler - ERROR - 找不到驗證碼處理器，請確認 `colatour_fetch_data.py` 可被匯入。
+2025-08-17 14:55:58 - travl4u_travel_crawler - ERROR - 爬蟲任務 70f6b139-8860-45c8-b637-6bb7d962c0f0 執行出錯: 可樂旅遊登入失敗，無法繼續爬取: 可樂旅遊登入失敗，無法繼續爬取
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 119, in _execute_crawling_task
+    raise RuntimeError("可樂旅遊登入失敗，無法繼續爬取")
+RuntimeError: 可樂旅遊登入失敗，無法繼續爬取
+2025-08-17 14:55:58 - travl4u_travel_crawler - ERROR - 錯誤: 可樂旅遊登入失敗，無法繼續爬取: 可樂旅遊登入失敗，無法繼續爬取
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 119, in _execute_crawling_task
+    raise RuntimeError("可樂旅遊登入失敗，無法繼續爬取")
+RuntimeError: 可樂旅遊登入失敗，無法繼續爬取
+2025-08-17 14:55:58 - travl4u_travel_crawler - ERROR - 找不到驗證碼處理器，請確認 `colatour_fetch_data.py` 可被匯入。
+2025-08-17 14:55:58 - travl4u_travel_crawler - ERROR - 爬蟲任務 046e704f-3548-419e-8cf5-0ff9aa2dca7f 執行出錯: 可樂旅遊登入失敗，無法繼續爬取: 可樂旅遊登入失敗，無法繼續爬取
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 119, in _execute_crawling_task
+    raise RuntimeError("可樂旅遊登入失敗，無法繼續爬取")
+RuntimeError: 可樂旅遊登入失敗，無法繼續爬取
+2025-08-17 14:55:58 - travl4u_travel_crawler - ERROR - 錯誤: 可樂旅遊登入失敗，無法繼續爬取: 可樂旅遊登入失敗，無法繼續爬取
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 119, in _execute_crawling_task
+    raise RuntimeError("可樂旅遊登入失敗，無法繼續爬取")
+RuntimeError: 可樂旅遊登入失敗，無法繼續爬取
+2025-08-17 15:06:03 - travl4u_travel_crawler - ERROR - 爬蟲任務 220fe948-b322-468e-8f07-a8ffa146bc5f 執行出錯: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 125, in login_colatour
+    login_url = self.api_config.get('login_url', 'https://www.colatour.com.tw/C000_Portal/C000_MemberLogin.aspx')
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 125, in login_colatour
+    login_url = self.api_config.get('login_url', 'https://www.colatour.com.tw/C000_Portal/C000_MemberLogin.aspx')
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:06:03 - travl4u_travel_crawler - ERROR - 錯誤: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 125, in login_colatour
+    login_url = self.api_config.get('login_url', 'https://www.colatour.com.tw/C000_Portal/C000_MemberLogin.aspx')
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 125, in login_colatour
+    login_url = self.api_config.get('login_url', 'https://www.colatour.com.tw/C000_Portal/C000_MemberLogin.aspx')
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:28:37 - travl4u_travel_crawler - ERROR - 爬蟲任務 f16aad85-618e-4a49-a43e-cc74d8e8c251 執行出錯: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 118, in login_colatour
+    while retries < max_retries:
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 118, in login_colatour
+    while retries < max_retries:
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:28:37 - travl4u_travel_crawler - ERROR - 錯誤: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 118, in login_colatour
+    while retries < max_retries:
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 118, in login_colatour
+    while retries < max_retries:
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:38:38 - travl4u_travel_crawler - ERROR - 登入流程發生錯誤，重試（1/3）：: 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 150, in login_colatour
+    try:
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 150, in login_colatour
+    try:
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:38:38 - travl4u_travel_crawler - ERROR - 爬蟲任務 81e048f6-cade-442e-a2a6-2d9bbdfd0aec 執行出錯: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 150, in login_colatour
+    try:
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 150, in login_colatour
+    try:
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 166, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+
+2025-08-17 15:38:38 - travl4u_travel_crawler - ERROR - 錯誤: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 150, in login_colatour
+    try:
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 150, in login_colatour
+    try:
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 166, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+
+2025-08-17 15:38:38 - travl4u_travel_crawler - ERROR - 爬蟲任務 7fa6f465-72b8-49c7-9d7a-f7baf208c0cf 執行出錯: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 111, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+
+2025-08-17 15:38:38 - travl4u_travel_crawler - ERROR - 錯誤: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 111, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+
+2025-08-17 15:42:35 - travl4u_travel_crawler - ERROR - 登入流程發生錯誤，重試（1/3）：: 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:42:36 - travl4u_travel_crawler - ERROR - 登入流程發生錯誤，重試（2/3）：: 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:42:37 - travl4u_travel_crawler - ERROR - 登入流程發生錯誤，重試（3/3）：: 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:42:37 - travl4u_travel_crawler - ERROR - 已達最大重試次數，登入失敗
+2025-08-17 15:42:37 - travl4u_travel_crawler - ERROR - 爬蟲任務 64fd2266-f8fd-4675-b2c1-52067e6601b0 執行出錯: 可樂旅遊登入失敗，無法繼續爬取: 可樂旅遊登入失敗，無法繼續爬取
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 119, in _execute_crawling_task
+    raise RuntimeError("可樂旅遊登入失敗，無法繼續爬取")
+RuntimeError: 可樂旅遊登入失敗，無法繼續爬取
+2025-08-17 15:42:37 - travl4u_travel_crawler - ERROR - 錯誤: 可樂旅遊登入失敗，無法繼續爬取: 可樂旅遊登入失敗，無法繼續爬取
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 119, in _execute_crawling_task
+    raise RuntimeError("可樂旅遊登入失敗，無法繼續爬取")
+RuntimeError: 可樂旅遊登入失敗，無法繼續爬取
+2025-08-17 15:42:40 - travl4u_travel_crawler - ERROR - 登入流程發生錯誤，重試（1/3）：: 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:42:40 - travl4u_travel_crawler - ERROR - 登入流程發生錯誤，重試（2/3）：: 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 128, in login_colatour
+    predicted_label = solver.predict_captcha(images)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:47:36 - travl4u_travel_crawler - ERROR - 登入流程發生錯誤，重試（1/3）：: 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 149, in login_colatour
+    try:
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 149, in login_colatour
+    try:
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 15:47:36 - travl4u_travel_crawler - ERROR - 爬蟲任務 dc243c85-ddcf-400c-b51a-e3d6368d7177 執行出錯: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 149, in login_colatour
+    try:
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 149, in login_colatour
+    try:
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 165, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+
+2025-08-17 15:47:36 - travl4u_travel_crawler - ERROR - 錯誤: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 149, in login_colatour
+    try:
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 149, in login_colatour
+    try:
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 165, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9c0ea]
+	(No symbol) [0x0x7ff7e2d88355]
+	(No symbol) [0x0x7ff7e2dacefa]
+	(No symbol) [0x0x7ff7e2e22845]
+	(No symbol) [0x0x7ff7e2e42d02]
+	(No symbol) [0x0x7ff7e2e1af13]
+	(No symbol) [0x0x7ff7e2de4151]
+	(No symbol) [0x0x7ff7e2de4ee3]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	GetHandleVerifier [0x0x7ff7e300f914+115956]
+	GetHandleVerifier [0x0x7ff7e300fac9+116393]
+	GetHandleVerifier [0x0x7ff7e2ff5ef8+10968]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+
+2025-08-17 15:47:36 - travl4u_travel_crawler - ERROR - 爬蟲任務 bd4150ec-7c9f-4833-8939-2ef4a0b96ad0 執行出錯: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 111, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+
+2025-08-17 15:47:36 - travl4u_travel_crawler - ERROR - 錯誤: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 111, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id
+Stacktrace:
+	GetHandleVerifier [0x0x7ff7e3006b25+79621]
+	GetHandleVerifier [0x0x7ff7e3006b80+79712]
+	(No symbol) [0x0x7ff7e2d9bf1c]
+	(No symbol) [0x0x7ff7e2de327f]
+	(No symbol) [0x0x7ff7e2e1b002]
+	(No symbol) [0x0x7ff7e2e15b23]
+	(No symbol) [0x0x7ff7e2e14be9]
+	(No symbol) [0x0x7ff7e2d66fd5]
+	GetHandleVerifier [0x0x7ff7e32c683d+2962461]
+	GetHandleVerifier [0x0x7ff7e32c0b5d+2938685]
+	GetHandleVerifier [0x0x7ff7e32df71d+3064573]
+	GetHandleVerifier [0x0x7ff7e3020c6e+186446]
+	GetHandleVerifier [0x0x7ff7e3028a3f+218655]
+	(No symbol) [0x0x7ff7e2d65fd1]
+	GetHandleVerifier [0x0x7ff7e33de428+4108296]
+	BaseThreadInitThunk [0x0x7ffc205ce8d7+23]
+	RtlUserThreadStart [0x0x7ffc2171c34c+44]
+
+2025-08-17 16:23:49 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（1/3）
+2025-08-17 16:23:50 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（2/3）
+2025-08-17 16:23:51 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（3/3）
+2025-08-17 16:23:51 - travl4u_travel_crawler - ERROR - 已達最大重試次數，登入失敗
+2025-08-17 16:23:51 - travl4u_travel_crawler - ERROR - 爬蟲任務 5eb82115-28db-46c7-9663-45ca7cef86e6 執行出錯: 可樂旅遊登入失敗，無法繼續爬取: 可樂旅遊登入失敗，無法繼續爬取
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 119, in _execute_crawling_task
+    raise RuntimeError("可樂旅遊登入失敗，無法繼續爬取")
+RuntimeError: 可樂旅遊登入失敗，無法繼續爬取
+2025-08-17 16:23:51 - travl4u_travel_crawler - ERROR - 錯誤: 可樂旅遊登入失敗，無法繼續爬取: 可樂旅遊登入失敗，無法繼續爬取
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 119, in _execute_crawling_task
+    raise RuntimeError("可樂旅遊登入失敗，無法繼續爬取")
+RuntimeError: 可樂旅遊登入失敗，無法繼續爬取
+2025-08-17 16:49:02 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（1/3）
+2025-08-17 16:49:03 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（2/3）
+2025-08-17 17:03:50 - travl4u_travel_crawler - ERROR - 爬蟲任務 537c89b5-0175-4825-9c07-9bb810fb91de 執行出錯: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 243, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 243, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:03:50 - travl4u_travel_crawler - ERROR - 錯誤: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 243, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 243, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:03:50 - travl4u_travel_crawler - ERROR - 爬蟲任務 66cec155-a2c5-4a35-9b27-6cceecb6e23a 執行出錯: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x97fd33+62915]
+	GetHandleVerifier [0x0x97fd74+62980]
+	(No symbol) [0x0x7b3e13]
+	(No symbol) [0x0x7a3760]
+	(No symbol) [0x0x7c15d2]
+	(No symbol) [0x0x827cac]
+	(No symbol) [0x0x841fc9]
+	(No symbol) [0x0x8211d6]
+	(No symbol) [0x0x7f0833]
+	(No symbol) [0x0x7f16a4]
+	GetHandleVerifier [0x0xbe8d23+2590131]
+	GetHandleVerifier [0x0xbe3f6a+2570234]
+	GetHandleVerifier [0x0x9a59ea+217722]
+	GetHandleVerifier [0x0x996058+153832]
+	GetHandleVerifier [0x0x99c4bd+179533]
+	GetHandleVerifier [0x0x987738+94152]
+	GetHandleVerifier [0x0x9878c2+94546]
+	GetHandleVerifier [0x0x972bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x97fd33+62915]
+	GetHandleVerifier [0x0x97fd74+62980]
+	(No symbol) [0x0x7b3e13]
+	(No symbol) [0x0x7a3760]
+	(No symbol) [0x0x7c15d2]
+	(No symbol) [0x0x827cac]
+	(No symbol) [0x0x841fc9]
+	(No symbol) [0x0x8211d6]
+	(No symbol) [0x0x7f0833]
+	(No symbol) [0x0x7f16a4]
+	GetHandleVerifier [0x0xbe8d23+2590131]
+	GetHandleVerifier [0x0xbe3f6a+2570234]
+	GetHandleVerifier [0x0x9a59ea+217722]
+	GetHandleVerifier [0x0x996058+153832]
+	GetHandleVerifier [0x0x99c4bd+179533]
+	GetHandleVerifier [0x0x987738+94152]
+	GetHandleVerifier [0x0x9878c2+94546]
+	GetHandleVerifier [0x0x972bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 147, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\undetected_chromedriver\__init__.py", line 665, in get
+    return super().get(url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x97fd33+62915]
+	GetHandleVerifier [0x0x97fd74+62980]
+	(No symbol) [0x0x7b3e13]
+	(No symbol) [0x0x7a3760]
+	(No symbol) [0x0x7c15d2]
+	(No symbol) [0x0x827cac]
+	(No symbol) [0x0x841fc9]
+	(No symbol) [0x0x8211d6]
+	(No symbol) [0x0x7f0833]
+	(No symbol) [0x0x7f16a4]
+	GetHandleVerifier [0x0xbe8d23+2590131]
+	GetHandleVerifier [0x0xbe3f6a+2570234]
+	GetHandleVerifier [0x0x9a59ea+217722]
+	GetHandleVerifier [0x0x996058+153832]
+	GetHandleVerifier [0x0x99c4bd+179533]
+	GetHandleVerifier [0x0x987738+94152]
+	GetHandleVerifier [0x0x9878c2+94546]
+	GetHandleVerifier [0x0x972bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+
+2025-08-17 17:03:50 - travl4u_travel_crawler - ERROR - 錯誤: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x97fd33+62915]
+	GetHandleVerifier [0x0x97fd74+62980]
+	(No symbol) [0x0x7b3e13]
+	(No symbol) [0x0x7a3760]
+	(No symbol) [0x0x7c15d2]
+	(No symbol) [0x0x827cac]
+	(No symbol) [0x0x841fc9]
+	(No symbol) [0x0x8211d6]
+	(No symbol) [0x0x7f0833]
+	(No symbol) [0x0x7f16a4]
+	GetHandleVerifier [0x0xbe8d23+2590131]
+	GetHandleVerifier [0x0xbe3f6a+2570234]
+	GetHandleVerifier [0x0x9a59ea+217722]
+	GetHandleVerifier [0x0x996058+153832]
+	GetHandleVerifier [0x0x99c4bd+179533]
+	GetHandleVerifier [0x0x987738+94152]
+	GetHandleVerifier [0x0x9878c2+94546]
+	GetHandleVerifier [0x0x972bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x97fd33+62915]
+	GetHandleVerifier [0x0x97fd74+62980]
+	(No symbol) [0x0x7b3e13]
+	(No symbol) [0x0x7a3760]
+	(No symbol) [0x0x7c15d2]
+	(No symbol) [0x0x827cac]
+	(No symbol) [0x0x841fc9]
+	(No symbol) [0x0x8211d6]
+	(No symbol) [0x0x7f0833]
+	(No symbol) [0x0x7f16a4]
+	GetHandleVerifier [0x0xbe8d23+2590131]
+	GetHandleVerifier [0x0xbe3f6a+2570234]
+	GetHandleVerifier [0x0x9a59ea+217722]
+	GetHandleVerifier [0x0x996058+153832]
+	GetHandleVerifier [0x0x99c4bd+179533]
+	GetHandleVerifier [0x0x987738+94152]
+	GetHandleVerifier [0x0x9878c2+94546]
+	GetHandleVerifier [0x0x972bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 147, in login_colatour
+    self.driver.get(login_url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\undetected_chromedriver\__init__.py", line 665, in get
+    return super().get(url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x97fd33+62915]
+	GetHandleVerifier [0x0x97fd74+62980]
+	(No symbol) [0x0x7b3e13]
+	(No symbol) [0x0x7a3760]
+	(No symbol) [0x0x7c15d2]
+	(No symbol) [0x0x827cac]
+	(No symbol) [0x0x841fc9]
+	(No symbol) [0x0x8211d6]
+	(No symbol) [0x0x7f0833]
+	(No symbol) [0x0x7f16a4]
+	GetHandleVerifier [0x0xbe8d23+2590131]
+	GetHandleVerifier [0x0xbe3f6a+2570234]
+	GetHandleVerifier [0x0x9a59ea+217722]
+	GetHandleVerifier [0x0x996058+153832]
+	GetHandleVerifier [0x0x99c4bd+179533]
+	GetHandleVerifier [0x0x987738+94152]
+	GetHandleVerifier [0x0x9878c2+94546]
+	GetHandleVerifier [0x0x972bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+
+2025-08-17 17:11:07 - travl4u_travel_crawler - ERROR - 爬蟲任務 629a32a0-57b0-435e-9cff-61e703f327f1 執行出錯: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 240, in _process_system_flights
+    self.api_client.navigate_to_flight_search_page(dep_city, arr_city, dep_date, return_date)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 225, in navigate_to_flight_search_page
+    self.driver.get(url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 225, in navigate_to_flight_search_page
+    self.driver.get(url)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:11:07 - travl4u_travel_crawler - ERROR - 錯誤: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 240, in _process_system_flights
+    self.api_client.navigate_to_flight_search_page(dep_city, arr_city, dep_date, return_date)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 225, in navigate_to_flight_search_page
+    self.driver.get(url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 225, in navigate_to_flight_search_page
+    self.driver.get(url)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:39:40 - travl4u_travel_crawler - ERROR - 爬蟲任務 2d58095e-1af0-4b2c-84b8-7b6602441068 執行出錯: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 255, in _process_system_flights
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 255, in _process_system_flights
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:39:40 - travl4u_travel_crawler - ERROR - 錯誤: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 255, in _process_system_flights
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 255, in _process_system_flights
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:40:30 - travl4u_travel_crawler - ERROR - 擷取 selenium-wire 回應時發生例外: 
+2025-08-17 17:41:01 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（1/3）
+2025-08-17 17:45:30 - travl4u_travel_crawler - ERROR - 爬蟲任務 fc7224b3-b86d-43f8-b525-6cd5060235e6 執行出錯: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 254, in _process_system_flights
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 254, in _process_system_flights
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:45:30 - travl4u_travel_crawler - ERROR - 錯誤: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 254, in _process_system_flights
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 254, in _process_system_flights
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:46:01 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（1/3）
+2025-08-17 17:48:48 - travl4u_travel_crawler - ERROR - 爬蟲任務 40d79e39-98ee-47a1-8224-3fcb4c772145 執行出錯: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 252, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 252, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:48:48 - travl4u_travel_crawler - ERROR - 錯誤: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 252, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 252, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 17:48:48 - travl4u_travel_crawler - ERROR - 爬蟲任務 ed9f93df-41d4-4d72-a822-7f1bbb97bc66 執行出錯: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x98fd33+62915]
+	GetHandleVerifier [0x0x98fd74+62980]
+	(No symbol) [0x0x7c3e13]
+	(No symbol) [0x0x7b3760]
+	(No symbol) [0x0x7d15d2]
+	(No symbol) [0x0x837cac]
+	(No symbol) [0x0x851fc9]
+	(No symbol) [0x0x8311d6]
+	(No symbol) [0x0x800833]
+	(No symbol) [0x0x8016a4]
+	GetHandleVerifier [0x0xbf8d23+2590131]
+	GetHandleVerifier [0x0xbf3f6a+2570234]
+	GetHandleVerifier [0x0x9b59ea+217722]
+	GetHandleVerifier [0x0x9a6058+153832]
+	GetHandleVerifier [0x0x9ac4bd+179533]
+	GetHandleVerifier [0x0x997738+94152]
+	GetHandleVerifier [0x0x9978c2+94546]
+	GetHandleVerifier [0x0x982bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x98fd33+62915]
+	GetHandleVerifier [0x0x98fd74+62980]
+	(No symbol) [0x0x7c3e13]
+	(No symbol) [0x0x7b3760]
+	(No symbol) [0x0x7d15d2]
+	(No symbol) [0x0x837cac]
+	(No symbol) [0x0x851fc9]
+	(No symbol) [0x0x8311d6]
+	(No symbol) [0x0x800833]
+	(No symbol) [0x0x8016a4]
+	GetHandleVerifier [0x0xbf8d23+2590131]
+	GetHandleVerifier [0x0xbf3f6a+2570234]
+	GetHandleVerifier [0x0x9b59ea+217722]
+	GetHandleVerifier [0x0x9a6058+153832]
+	GetHandleVerifier [0x0x9ac4bd+179533]
+	GetHandleVerifier [0x0x997738+94152]
+	GetHandleVerifier [0x0x9978c2+94546]
+	GetHandleVerifier [0x0x982bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 254, in login_colatour
+    login_url = self.api_config.get('login_url', 'https://www.colatour.com.tw/C000_Portal/C000_MemberLogin.aspx')
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\undetected_chromedriver\__init__.py", line 665, in get
+    return super().get(url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x98fd33+62915]
+	GetHandleVerifier [0x0x98fd74+62980]
+	(No symbol) [0x0x7c3e13]
+	(No symbol) [0x0x7b3760]
+	(No symbol) [0x0x7d15d2]
+	(No symbol) [0x0x837cac]
+	(No symbol) [0x0x851fc9]
+	(No symbol) [0x0x8311d6]
+	(No symbol) [0x0x800833]
+	(No symbol) [0x0x8016a4]
+	GetHandleVerifier [0x0xbf8d23+2590131]
+	GetHandleVerifier [0x0xbf3f6a+2570234]
+	GetHandleVerifier [0x0x9b59ea+217722]
+	GetHandleVerifier [0x0x9a6058+153832]
+	GetHandleVerifier [0x0x9ac4bd+179533]
+	GetHandleVerifier [0x0x997738+94152]
+	GetHandleVerifier [0x0x9978c2+94546]
+	GetHandleVerifier [0x0x982bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+
+2025-08-17 17:48:48 - travl4u_travel_crawler - ERROR - 錯誤: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x98fd33+62915]
+	GetHandleVerifier [0x0x98fd74+62980]
+	(No symbol) [0x0x7c3e13]
+	(No symbol) [0x0x7b3760]
+	(No symbol) [0x0x7d15d2]
+	(No symbol) [0x0x837cac]
+	(No symbol) [0x0x851fc9]
+	(No symbol) [0x0x8311d6]
+	(No symbol) [0x0x800833]
+	(No symbol) [0x0x8016a4]
+	GetHandleVerifier [0x0xbf8d23+2590131]
+	GetHandleVerifier [0x0xbf3f6a+2570234]
+	GetHandleVerifier [0x0x9b59ea+217722]
+	GetHandleVerifier [0x0x9a6058+153832]
+	GetHandleVerifier [0x0x9ac4bd+179533]
+	GetHandleVerifier [0x0x997738+94152]
+	GetHandleVerifier [0x0x9978c2+94546]
+	GetHandleVerifier [0x0x982bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x98fd33+62915]
+	GetHandleVerifier [0x0x98fd74+62980]
+	(No symbol) [0x0x7c3e13]
+	(No symbol) [0x0x7b3760]
+	(No symbol) [0x0x7d15d2]
+	(No symbol) [0x0x837cac]
+	(No symbol) [0x0x851fc9]
+	(No symbol) [0x0x8311d6]
+	(No symbol) [0x0x800833]
+	(No symbol) [0x0x8016a4]
+	GetHandleVerifier [0x0xbf8d23+2590131]
+	GetHandleVerifier [0x0xbf3f6a+2570234]
+	GetHandleVerifier [0x0x9b59ea+217722]
+	GetHandleVerifier [0x0x9a6058+153832]
+	GetHandleVerifier [0x0x9ac4bd+179533]
+	GetHandleVerifier [0x0x997738+94152]
+	GetHandleVerifier [0x0x9978c2+94546]
+	GetHandleVerifier [0x0x982bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 112, in _execute_crawling_task
+    login_success = self.api_client.login_colatour(
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 254, in login_colatour
+    login_url = self.api_config.get('login_url', 'https://www.colatour.com.tw/C000_Portal/C000_MemberLogin.aspx')
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\undetected_chromedriver\__init__.py", line 665, in get
+    return super().get(url)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 389, in get
+    self.execute(Command.GET, {"url": url})
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.InvalidSessionIdException: Message: invalid session id: session deleted as the browser has closed the connection
+from disconnected: not connected to DevTools
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0x98fd33+62915]
+	GetHandleVerifier [0x0x98fd74+62980]
+	(No symbol) [0x0x7c3e13]
+	(No symbol) [0x0x7b3760]
+	(No symbol) [0x0x7d15d2]
+	(No symbol) [0x0x837cac]
+	(No symbol) [0x0x851fc9]
+	(No symbol) [0x0x8311d6]
+	(No symbol) [0x0x800833]
+	(No symbol) [0x0x8016a4]
+	GetHandleVerifier [0x0xbf8d23+2590131]
+	GetHandleVerifier [0x0xbf3f6a+2570234]
+	GetHandleVerifier [0x0x9b59ea+217722]
+	GetHandleVerifier [0x0x9a6058+153832]
+	GetHandleVerifier [0x0x9ac4bd+179533]
+	GetHandleVerifier [0x0x997738+94152]
+	GetHandleVerifier [0x0x9978c2+94546]
+	GetHandleVerifier [0x0x982bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+
+2025-08-17 17:49:06 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（1/3）
+2025-08-17 17:53:37 - travl4u_travel_crawler - ERROR - 擷取 selenium-wire 回應時發生例外: 
+2025-08-17 17:54:13 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（1/3）
+2025-08-17 18:43:16 - travl4u_travel_crawler - ERROR - 擷取 selenium-wire 回應時發生例外: 
+2025-08-17 18:43:17 - travl4u_travel_crawler - ERROR - 爬蟲任務 ac606205-c908-4966-ae79-e099d4bcd44c 執行出錯: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 252, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 252, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 18:43:17 - travl4u_travel_crawler - ERROR - 錯誤: : 
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 122, in _execute_crawling_task
+    flight_data = self._process_system_flights(task)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 252, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\crawler_controller.py", line 252, in _process_system_flights
+    self.log_manager.log_info(f"{system_name} 系統所有艙等查詢完成，總共生成 {len(all_flight_combinations_for_task)} 個航班組合")
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 90, in trace_dispatch
+    return self.dispatch_line(frame)
+  File "C:\Users\wu020\AppData\Local\Programs\Python\Python310\lib\bdb.py", line 115, in dispatch_line
+    if self.quitting: raise BdbQuit
+bdb.BdbQuit
+2025-08-17 18:43:21 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（1/3）
+2025-08-17 18:43:22 - travl4u_travel_crawler - WARNING - 登入失敗觸發警示，重新嘗試（2/3）
+2025-08-17 18:50:25 - travl4u_travel_crawler - ERROR - 登入流程發生錯誤，重試（1/3）：Message: timeout: Timed out receiving message from renderer: 40.000
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0xc5fd33+62915]
+	GetHandleVerifier [0x0xc5fd74+62980]
+	(No symbol) [0x0xa93e13]
+	(No symbol) [0x0xa84aab]
+	(No symbol) [0x0xa847e1]
+	(No symbol) [0x0xa82784]
+	(No symbol) [0x0xa8324d]
+	(No symbol) [0x0xa8fa99]
+	(No symbol) [0x0xaa0f75]
+	(No symbol) [0x0xaa6956]
+	(No symbol) [0x0xa8388d]
+	(No symbol) [0x0xaa0d1e]
+	(No symbol) [0x0xb229cc]
+	(No symbol) [0x0xb011d6]
+	(No symbol) [0x0xad0833]
+	(No symbol) [0x0xad16a4]
+	GetHandleVerifier [0x0xec8d23+2590131]
+	GetHandleVerifier [0x0xec3f6a+2570234]
+	GetHandleVerifier [0x0xc859ea+217722]
+	GetHandleVerifier [0x0xc76058+153832]
+	GetHandleVerifier [0x0xc7c4bd+179533]
+	GetHandleVerifier [0x0xc67738+94152]
+	GetHandleVerifier [0x0xc678c2+94546]
+	GetHandleVerifier [0x0xc52bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+: Message: timeout: Timed out receiving message from renderer: 40.000
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0xc5fd33+62915]
+	GetHandleVerifier [0x0xc5fd74+62980]
+	(No symbol) [0x0xa93e13]
+	(No symbol) [0x0xa84aab]
+	(No symbol) [0x0xa847e1]
+	(No symbol) [0x0xa82784]
+	(No symbol) [0x0xa8324d]
+	(No symbol) [0x0xa8fa99]
+	(No symbol) [0x0xaa0f75]
+	(No symbol) [0x0xaa6956]
+	(No symbol) [0x0xa8388d]
+	(No symbol) [0x0xaa0d1e]
+	(No symbol) [0x0xb229cc]
+	(No symbol) [0x0xb011d6]
+	(No symbol) [0x0xad0833]
+	(No symbol) [0x0xad16a4]
+	GetHandleVerifier [0x0xec8d23+2590131]
+	GetHandleVerifier [0x0xec3f6a+2570234]
+	GetHandleVerifier [0x0xc859ea+217722]
+	GetHandleVerifier [0x0xc76058+153832]
+	GetHandleVerifier [0x0xc7c4bd+179533]
+	GetHandleVerifier [0x0xc67738+94152]
+	GetHandleVerifier [0x0xc678c2+94546]
+	GetHandleVerifier [0x0xc52bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+Traceback (most recent call last):
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\travl4u_travel_crawler\controllers\api_client.py", line 291, in login_colatour
+    self.driver.find_element(By.ID, 'cmdLogin').click()
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webelement.py", line 94, in click
+    self._execute(Command.CLICK_ELEMENT)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webelement.py", line 395, in _execute
+    return self._parent.execute(command, params)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\webdriver.py", line 380, in execute
+    self.error_handler.check_response(response)
+  File "C:\Users\wu020\Documents\github\ColaTourFareScraper\.venv\lib\site-packages\selenium\webdriver\remote\errorhandler.py", line 229, in check_response
+    raise exception_class(message, screen, stacktrace)
+selenium.common.exceptions.TimeoutException: Message: timeout: Timed out receiving message from renderer: 40.000
+  (Session info: chrome=139.0.7258.128)
+Stacktrace:
+	GetHandleVerifier [0x0xc5fd33+62915]
+	GetHandleVerifier [0x0xc5fd74+62980]
+	(No symbol) [0x0xa93e13]
+	(No symbol) [0x0xa84aab]
+	(No symbol) [0x0xa847e1]
+	(No symbol) [0x0xa82784]
+	(No symbol) [0x0xa8324d]
+	(No symbol) [0x0xa8fa99]
+	(No symbol) [0x0xaa0f75]
+	(No symbol) [0x0xaa6956]
+	(No symbol) [0x0xa8388d]
+	(No symbol) [0x0xaa0d1e]
+	(No symbol) [0x0xb229cc]
+	(No symbol) [0x0xb011d6]
+	(No symbol) [0x0xad0833]
+	(No symbol) [0x0xad16a4]
+	GetHandleVerifier [0x0xec8d23+2590131]
+	GetHandleVerifier [0x0xec3f6a+2570234]
+	GetHandleVerifier [0x0xc859ea+217722]
+	GetHandleVerifier [0x0xc76058+153832]
+	GetHandleVerifier [0x0xc7c4bd+179533]
+	GetHandleVerifier [0x0xc67738+94152]
+	GetHandleVerifier [0x0xc678c2+94546]
+	GetHandleVerifier [0x0xc52bda+9322]
+	BaseThreadInitThunk [0x0x76085d49+25]
+	RtlInitializeExceptionChain [0x0x7707d2fb+107]
+	RtlGetAppContainerNamedObjectPath [0x0x7707d281+561]
+

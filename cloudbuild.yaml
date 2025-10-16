@@ -1,0 +1,443 @@
+substitutions:
+  _CI_REGISTRY_IMAGE: '${_CI_REGISTRY_IMAGE}'
+  _CI_REGISTRY_IMAGE_NAME: '${_CI_REGISTRY_IMAGE_NAME}'
+  _CONTAINERNAME: '${_CONTAINERNAME}'
+  _ZONE: '${_ZONE}'
+  _NODE_ENV: '${_NODE_ENV}'
+  _SERVICE_ACCOUNT: '${_SERVICE_ACCOUNT}'
+
+options:
+  logging: CLOUD_LOGGING_ONLY
+
+steps:
+# 檢查 Cloud Build 環境變數
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+  - '-c'
+  - |
+    BUILD_ID=$(curl -s -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/attributes/build-id)
+    echo "BUILD_ID: $BUILD_ID"
+
+# 建立 Docker 映像
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '--build-arg', 'NODE_ENV=${_NODE_ENV}', '-t', '${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA}', '.']
+
+# 推送 Docker 映像到 Artifact Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', '${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA}']
+
+# 檢查 Cloud Run Job 是否存在並創建或更新
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-hnd-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=HND
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-nrt-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=NRT
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-kix-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=KIX
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-itm-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=ITM
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-icn-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=ICN
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-gmp-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=GMP
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-bkk-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=BKK
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-dmk-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=DMK
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-sin-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=SIN
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-sfo-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=SFO
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-lax-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=LAX
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-sea-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=SEA
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-lhr-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=LHR
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-lgw-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=LGW
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-lcy-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=LCY
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-stn-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=STN
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-cdg-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=CDG
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-ory-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=ORY
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-ams-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=AMS
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-pvg-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=PVG
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-sha-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=SHA
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-pek-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=PEK
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-pkx-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=PKX
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-hkg-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=HKG
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+      gcloud beta run jobs deploy ${_NODE_ENV}-${_CONTAINERNAME}-mga-job \
+        --image ${_CI_REGISTRY_IMAGE}/${PROJECT_ID}/${_CI_REGISTRY_IMAGE_NAME}/${_CONTAINERNAME}:${COMMIT_SHA} \
+        --max-retries 0 \
+        --region ${_ZONE} \
+        --task-timeout 6h \
+        --memory 2Gi \
+        --cpu 1 \
+        --service-account ${_SERVICE_ACCOUNT} \
+        --set-env-vars PROJECT_ID=${PROJECT_ID} \
+        --set-env-vars IATA_ID=MFM
+
+# 執行 Cloud Run Job
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: 'run-job'
+  args:
+  - 'beta'
+  - 'run'
+  - 'jobs'
+  - 'execute'
+  - '${_NODE_ENV}-${_CONTAINERNAME}-job'
+  - '--region'
+  - '${_ZONE}'
+  allowFailure: true
+  

@@ -1,0 +1,50 @@
+# Git相關文件
+.git
+.gitignore
+.github
+.gitattributes
+
+# 虛擬環境
+.venv
+venv
+env
+ENV
+
+# Python快取文件
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# IDE配置文件
+.idea
+.vscode
+*.swp
+*.swo
+
+# 本地測試和日誌文件
+*.log
+test/
+tests/
+
+# 數據文件(根據需要調整)
+flight_data.json
+flight_data.json.json
+
+# 文檔
+docs/
+
+# 系統文件
+.DS_Store
+Thumbs.db
+
+# 容器內不需要的Docker相關文件
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# 敏感信息(如果有更多敏感文件，請添加)
+# secrets/
+# *.pem
+# *.key 
