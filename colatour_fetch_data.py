@@ -1283,8 +1283,6 @@ if __name__ == "__main__":
     IATA_ID = os.getenv('IATA_ID')
     for iata in [['TPE', 'AMS']
                 ]:
-        # flight_tasks_holidays_processors = FlightTasksHolidaysProcessors()
-        # date_ranges = flight_tasks_holidays_processors.process_flight_tasks()
         for date in [
             [[2025, 12, 5], [2025, 12, 10]],
             [[2025, 12, 24], [2025, 12, 28]],
