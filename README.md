@@ -33,14 +33,18 @@ ColaTourFareScraper 是一個用於爬取可樂旅遊網站上機票票價的專
    ```bash
    python colatour_fetch_data.py
    ```
-4. 系統將自動從 API 取得 2 個月後和 6 個月後的節日日期，並針對這些日期進行機票價格爬取。
+4. 系統將自動從 API 取得 2 個月後和 6 個月後的固定日期組合，並針對這些日期進行機票價格爬取。
 
 ### 日期取得機制
-程式會透過 API 自動取得未來的節日日期：
-- **2 個月後的節日**：呼叫 `POST /calculate_holiday_dates` with `month_offset=2`
-- **6 個月後的節日**：呼叫 `POST /calculate_holiday_dates` with `month_offset=6`
+程式會透過 API 自動取得未來的固定日期組合：
+- **2 個月後的日期**：
+  - 呼叫 `POST /calculate_dates` with `{"month_offset": 2, "dep_day": 5, "return_day": 10}`
+  - 呼叫 `POST /calculate_dates` with `{"month_offset": 2, "dep_day": 24, "return_day": 28}`
+- **6 個月後的日期**：
+  - 呼叫 `POST /calculate_dates` with `{"month_offset": 6, "dep_day": 5, "return_day": 10}`
+  - 呼叫 `POST /calculate_dates` with `{"month_offset": 6, "dep_day": 24, "return_day": 28}`
 
-API 會回傳該月份的節日資訊，包含建議的出發日期 (`departure_date`) 和回程日期 (`return_date`)，系統將針對這些日期組合進行票價查詢。
+API 會根據月份偏移量和指定的出發日 (`dep_day`) 及回程日 (`return_day`)，計算並回傳完整的日期資訊 (`departure_date` 和 `return_date`)，系統將針對這些日期組合進行票價查詢。
 
 ## 常見問題
 1. **為什麼我的爬蟲無法正常運行？**

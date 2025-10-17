@@ -1108,31 +1108,43 @@ def navigate_to_flight_page(driver: webdriver.Chrome,
     driver.get(url)
     driver.set_window_size(945, 1012)
 
-def fetch_holiday_dates_from_api(month_offset: int) -> List[Dict[str, str]]:
+def fetch_dates_from_api(month_offset: int, dep_day: int, return_day: int) -> Dict[str, str]:
     """
-    從 API 取得指定月份偏移量的節日日期資訊。
+    從 API 取得指定月份偏移量和日期的航班日期資訊。
     
     Args:
         month_offset (int): 月份偏移量，表示從當前月份往後推幾個月（必須 >= 0）
+        dep_day (int): 出發日期的天數（1-31）
+        return_day (int): 回程日期的天數（1-31）
     
     Returns:
-        List[Dict[str, str]]: 節日日期列表，每個元素包含 departure_date 和 return_date
+        Dict[str, str]: 包含 departure_date 和 return_date 的字典
     
     Examples:
-        >>> dates = fetch_holiday_dates_from_api(2)
-        >>> dates[0]['departure_date']
-        '2025-12-21'
+        >>> date_info = fetch_dates_from_api(2, 5, 10)
+        >>> date_info['departure_date']
+        '2025-12-05'
+        >>> date_info['return_date']
+        '2025-12-10'
     
     Raises:
         requests.exceptions.RequestException: 當 API 請求失敗時
-        ValueError: 當 month_offset 小於 0 時
+        ValueError: 當參數值不符合要求時
         KeyError: 當 API 回應格式不符合預期時
     """
     if month_offset < 0:
         raise ValueError(f"month_offset 必須大於等於 0，目前值為 {month_offset}")
+    if not (1 <= dep_day <= 31):
+        raise ValueError(f"dep_day 必須介於 1-31，目前值為 {dep_day}")
+    if not (1 <= return_day <= 31):
+        raise ValueError(f"return_day 必須介於 1-31，目前值為 {return_day}")
     
-    api_url = f"{API_BASE_URL}/calculate_holiday_dates"
-    payload = {"month_offset": month_offset}
+    api_url = f"{API_BASE_URL}/calculate_dates"
+    payload = {
+        "month_offset": month_offset,
+        "dep_day": dep_day,
+        "return_day": return_day
+    }
     
     try:
         response = requests.post(api_url, json=payload, timeout=10)
@@ -1150,19 +1162,12 @@ def fetch_holiday_dates_from_api(month_offset: int) -> List[Dict[str, str]]:
         raise ValueError(f"API 回應錯誤: {error_msg}")
     
     try:
-        holidays = data["data"]["holidays"]
+        result = {
+            "departure_date": data["data"]["departure_date"],
+            "return_date": data["data"]["return_date"]
+        }
     except KeyError as e:
         raise KeyError(f"API 回應缺少必要欄位: {e}") from e
-    
-    result = []
-    for holiday in holidays:
-        try:
-            result.append({
-                "departure_date": holiday["departure_date"],
-                "return_date": holiday["return_date"]
-            })
-        except KeyError as e:
-            raise KeyError(f"節日資料缺少必要欄位: {e}") from e
     
     return result
 
@@ -1171,18 +1176,25 @@ def fetch_holiday_dates_from_api(month_offset: int) -> List[Dict[str, str]]:
 if __name__ == "__main__":
     IATA_ID = os.getenv('IATA_ID')
     
-    # 從 API 取得 2 個月後和 6 個月後的節日日期
+    # 定義要查詢的日期組合（出發日, 回程日）
+    date_combinations = [
+        (5, 10),   # 每月 5 日出發，10 日回程
+        (24, 28),  # 每月 24 日出發，28 日回程
+    ]
+    
+    # 從 API 取得 2 個月後和 6 個月後的日期
     month_offsets = [2, 6]
     all_dates = []
     
     for offset in month_offsets:
-        try:
-            holidays = fetch_holiday_dates_from_api(offset)
-            all_dates.extend(holidays)
-            print(f"成功取得 {offset} 個月後的節日日期，共 {len(holidays)} 筆")
-        except (requests.exceptions.RequestException, ValueError, KeyError) as e:
-            print(f"取得 {offset} 個月後的日期時發生錯誤: {e}")
-            continue
+        for dep_day, return_day in date_combinations:
+            try:
+                date_info = fetch_dates_from_api(offset, dep_day, return_day)
+                all_dates.append(date_info)
+                print(f"成功取得 {offset} 個月後的日期: {date_info['departure_date']} - {date_info['return_date']}")
+            except (requests.exceptions.RequestException, ValueError, KeyError) as e:
+                print(f"取得 {offset} 個月後 {dep_day}-{return_day} 日的日期時發生錯誤: {e}")
+                continue
     
     if not all_dates:
         print("警告: 未能取得任何日期資料，程式終止")
