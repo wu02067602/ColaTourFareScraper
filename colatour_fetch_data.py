@@ -36,6 +36,135 @@ import json
 PROJECT_ID = os.getenv('PROJECT_ID')
 API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost:8000')
 
+class MLModelManager:
+    """
+    負責管理機器學習模型的加載、預測和相關操作。
+    
+    此類別遵循單一職責原則，專注於機器學習模型的管理，
+    與圖像處理器協作來完成驗證碼識別任務。
+    
+    屬性:
+        model: 已加載的 Keras 模型實例。
+        image_processor (ImageProcessor): 圖像處理器實例。
+    
+    方法:
+        load_model(model_path): 從檔案載入模型。
+        predict(images): 對圖像進行預測。
+        decode_prediction(pred): 解碼預測結果為字串。
+    
+    Examples:
+        >>> manager = MLModelManager('captcha_model_1.keras')
+        >>> images = manager.image_processor.process_image('captcha.png', 30, 100)
+        >>> result = manager.predict(images)
+        'A3B9'
+    
+    Raises:
+        FileNotFoundError: 當模型檔案不存在時
+        ValueError: 當模型格式不正確時
+    """
+    
+    def __init__(self, model_path: str):
+        """
+        初始化 MLModelManager 並加載模型。
+        
+        Args:
+            model_path (str): 模型檔案的路徑。
+            
+        Raises:
+            FileNotFoundError: 當模型檔案不存在時
+            OSError: 當模型無法加載時
+        """
+        try:
+            self.model = load_model(model_path)
+            self.image_processor = ImageProcessor()
+        except FileNotFoundError as e:
+            raise FileNotFoundError(f"模型檔案不存在: {model_path}") from e
+        except OSError as e:
+            raise OSError(f"無法加載模型: {e}") from e
+    
+    def load_and_process_image(self, image_path: str, target_height: int, target_width: int) -> np.ndarray:
+        """
+        加載並處理圖像資料，轉換為模型可接受的格式。
+        
+        Args:
+            image_path (str): 圖像檔案的路徑。
+            target_height (int): 目標高度。
+            target_width (int): 目標寬度。
+            
+        Returns:
+            np.ndarray: 處理後的圖像數據，範圍在 [0, 1] 之間。
+            
+        Examples:
+            >>> manager = MLModelManager('model.keras')
+            >>> images = manager.load_and_process_image('captcha.png', 30, 100)
+            
+        Raises:
+            FileNotFoundError: 當圖像檔案不存在時
+            ValueError: 當圖像格式不正確時
+        """
+        try:
+            cropped_images = self.image_processor.process_image(image_path, target_height, target_width)
+            images = np.array(cropped_images, dtype='float32') / 255.0
+            return images
+        except FileNotFoundError as e:
+            raise FileNotFoundError(f"圖像檔案不存在: {image_path}") from e
+        except ValueError as e:
+            raise ValueError(f"圖像處理失敗: {e}") from e
+    
+    def decode_prediction(self, pred: np.ndarray) -> str:
+        """
+        將模型的預測結果解碼為可讀的字元串。
+        
+        Args:
+            pred (np.ndarray): 模型的預測結果，為每個字符的概率分布。
+            
+        Returns:
+            str: 解碼後的字串。
+            
+        Examples:
+            >>> manager = MLModelManager('model.keras')
+            >>> result = manager.decode_prediction(predictions)
+            'A3B9'
+            
+        Raises:
+            KeyError: 當字符映射不存在時
+            ValueError: 當預測結果格式不正確時
+        """
+        try:
+            int_to_char = {i: c for c, i in ImageProcessor.CHAR_TO_INT.items()}
+            return ''.join([int_to_char[np.argmax(c)] for c in pred])
+        except KeyError as e:
+            raise KeyError(f"字符映射錯誤: {e}") from e
+        except (IndexError, ValueError) as e:
+            raise ValueError(f"預測結果格式不正確: {e}") from e
+    
+    def predict(self, images: np.ndarray) -> str:
+        """
+        使用模型對圖像進行預測並解碼。
+        
+        Args:
+            images (np.ndarray): 預處理後的圖像數據。
+            
+        Returns:
+            str: 完整的預測字串。
+            
+        Examples:
+            >>> manager = MLModelManager('model.keras')
+            >>> images = manager.load_and_process_image('captcha.png', 30, 100)
+            >>> result = manager.predict(images)
+            'A3B9'
+            
+        Raises:
+            ValueError: 當預測失敗時
+        """
+        try:
+            predictions = [self.decode_prediction(self.model.predict(np.expand_dims(img, axis=0))) 
+                          for img in images]
+            return ''.join(predictions)
+        except ValueError as e:
+            raise ValueError(f"模型預測失敗: {e}") from e
+
+
 class ImageProcessor:
     """
     處理圖像的類別，包括獲取 Base64 圖像、保存圖像到文件以及處理圖像裁剪的功能。
@@ -235,6 +364,132 @@ class CaptchaSolver:
         predictions = [self.decode_prediction(self.model.predict(np.expand_dims(img, axis=0))) for img in images]
         return ''.join(predictions)
 
+class CaptchaLoginManager:
+    """
+    負責驗證碼識別和網站登入的管理類別。
+    
+    此類別遵循單一職責原則，專注於登入流程的管理，
+    整合了圖像處理、模型預測和登入操作。
+    
+    屬性:
+        driver (webdriver.Chrome): Selenium WebDriver 實例。
+        image_processor (ImageProcessor): 圖像處理器。
+        ml_manager (MLModelManager): 機器學習模型管理器。
+    
+    方法:
+        login(username, password): 執行單次登入。
+        login_with_retry(username, password, max_retries): 帶重試的登入。
+    
+    Examples:
+        >>> manager = CaptchaLoginManager(driver, 'captcha_model_1.keras')
+        >>> manager.login_with_retry('username', 'password')
+    
+    Raises:
+        ValueError: 當登入參數不正確時
+        TimeoutException: 當頁面元素載入超時時
+    """
+    
+    def __init__(self, driver: webdriver.Chrome, captcha_model_path: str):
+        """
+        初始化 CaptchaLoginManager。
+        
+        Args:
+            driver (webdriver.Chrome): Selenium WebDriver 實例。
+            captcha_model_path (str): 驗證碼模型檔案路徑。
+            
+        Raises:
+            FileNotFoundError: 當模型檔案不存在時
+        """
+        self.driver = driver
+        self.image_processor = ImageProcessor()
+        self.ml_manager = MLModelManager(captcha_model_path)
+    
+    def login(self, username: str, password: str) -> None:
+        """
+        執行單次登入操作，包含驗證碼識別。
+        
+        Args:
+            username (str): 登入帳號。
+            password (str): 登入密碼。
+            
+        Examples:
+            >>> manager = CaptchaLoginManager(driver, 'model.keras')
+            >>> manager.login('user123', 'pass456')
+            
+        Raises:
+            ValueError: 當帳號或密碼為空時
+            TimeoutException: 當頁面元素找不到時
+        """
+        if not username or not password:
+            raise ValueError("帳號和密碼不可為空")
+        
+        try:
+            self.driver.get('https://www.colatour.com.tw/C000_Portal/C000_MemberLogin.aspx')
+            
+            image_element = self.driver.find_element(By.ID, 'imgValidate')
+            image_base64 = self.image_processor.get_base64_image(self.driver, image_element)
+            self.image_processor.save_base64_image(image_base64, "image.png")
+            
+            target_height = 30
+            target_width = 100
+            images = self.ml_manager.load_and_process_image("image.png", target_height, target_width)
+            predicted_label = self.ml_manager.predict(images)
+            
+            input_field = self.driver.find_element(By.ID, 'txtImageValidate')
+            input_field.send_keys(predicted_label)
+            
+            account = self.driver.find_element(By.ID, 'txtMemberIdno')
+            account.send_keys(username)
+            
+            password_field = self.driver.find_element(By.ID, 'txtMemberPW')
+            password_field.send_keys(password)
+            
+            login_button = self.driver.find_element(By.ID, 'cmdLogin')
+            login_button.click()
+        except ValueError as e:
+            raise ValueError(f"登入過程發生錯誤: {e}") from e
+    
+    def login_with_retry(self, username: str, password: str, max_retries: int = 10) -> None:
+        """
+        帶重試機制的登入，處理驗證碼識別失敗的情況。
+        
+        Args:
+            username (str): 登入帳號。
+            password (str): 登入密碼。
+            max_retries (int): 最大重試次數，預設為 10。
+            
+        Examples:
+            >>> manager = CaptchaLoginManager(driver, 'model.keras')
+            >>> manager.login_with_retry('user123', 'pass456', max_retries=5)
+            
+        Raises:
+            ValueError: 當達到最大重試次數仍失敗時
+        """
+        retries = 0
+        self.login(username, password)
+        alert_present = EC.alert_is_present()
+        
+        while retries < max_retries and alert_present(self.driver):
+            try:
+                WebDriverWait(self.driver, 5).until(EC.alert_is_present())
+                alert = Alert(self.driver)
+                alert.accept()
+                
+                retries += 1
+                print(f"出現彈出視窗，重試登入...（第 {retries} 次重試）")
+                
+                self.login(username, password)
+            except TimeoutException:
+                break
+        
+        if retries == max_retries:
+            print("達到最大重試次數，登入失敗，關閉視窗")
+            self.driver.quit()
+            raise ValueError(f"登入失敗，已達最大重試次數 {max_retries}")
+        else:
+            print("登入成功")
+
+
 class WebNavigator:
     """
     用於瀏覽網站和執行相關操作的導覽器類別。
@@ -336,6 +591,282 @@ class WebNavigator:
             self.driver.quit()
         else:
             print("登入成功")
+
+class FlightDataCleaner:
+    """
+    負責航班資料的解析、清理和轉換。
+    
+    此類別遵循單一職責原則，專注於資料清理和格式轉換的功能，
+    不包含任何網頁抓取或業務邏輯。
+    
+    方法:
+        parse_date_time(text, year): 解析日期時間字串。
+        parse_duration_to_timedelta(text): 解析時長字串為 timedelta。
+        format_datetime_to_string(dt): 將 datetime 轉換為字串。
+        format_timedelta_to_hhmm(td): 將 timedelta 轉換為 HH:MM 格式。
+        extract_iata(text): 從文字中提取 IATA 機場代碼。
+        parse_flight_and_cabin(text): 解析航班和艙等資訊。
+        clean_flight_data(card, start_date, return_date): 清理航班資料。
+        clean_price_data(card): 清理票價資料。
+        clean_baggage_data(card, driver, flight_details): 清理行李資料。
+    
+    Examples:
+        >>> cleaner = FlightDataCleaner()
+        >>> dt = cleaner.parse_date_time("10/15(三) 14:30", 2025)
+        >>> cleaner.extract_iata("SFO 舊金山 舊金山國際機場")
+        'SFO'
+    
+    Raises:
+        ValueError: 當資料格式不正確時
+        KeyError: 當缺少必要欄位時
+    """
+    
+    @staticmethod
+    def parse_date_time(text: str, year: int) -> datetime:
+        """
+        將如 "10/15(三) 14:30" 或 "10/15 14:30" 的字串轉換為 datetime；年份由參數補齊。
+
+        Args:
+            text (str): 原始日期時間字串，格式 "MM/DD(週) HH:MM" 或 "MM/DD HH:MM"。
+            year (int): 年份 (西元)，用於組合完整日期時間。
+
+        Returns:
+            datetime: 解析成功的日期時間物件。
+            
+        Examples:
+            >>> FlightDataCleaner.parse_date_time("10/15(三) 14:30", 2025)
+            datetime(2025, 10, 15, 14, 30)
+
+        Raises:
+            ValueError: 當日期字串為空或無法解析時
+        """
+        if text is None:
+            raise ValueError("日期字串不可為空")
+        cleaned = re.sub(r"\([^)]*\)", "", text).strip()
+        try:
+            dt = datetime.strptime(f"{year}/" + cleaned, "%Y/%m/%d %H:%M")
+            return dt
+        except ValueError as exc:
+            raise ValueError(f"無法解析日期時間: {text}") from exc
+    
+    @staticmethod
+    def parse_duration_to_timedelta(text: str) -> timedelta:
+        """
+        將中文時長字串 (如 "03小時25分鐘"、"2小時15分鐘") 解析為 timedelta。
+
+        Args:
+            text (str): 表示時長的字串；若為空或無法解析則視為 0。
+
+        Returns:
+            timedelta: 由時與分組成的時間段；無法解析時為 0。
+            
+        Examples:
+            >>> FlightDataCleaner.parse_duration_to_timedelta("3小時25分鐘")
+            timedelta(hours=3, minutes=25)
+
+        Raises:
+            無明確錯誤，無法解析時回傳 timedelta(0)
+        """
+        if not text:
+            return timedelta(0)
+        hours = 0
+        minutes = 0
+        m = re.search(r"(\d+)\s*小時", text)
+        if m:
+            hours = int(m.group(1))
+        m = re.search(r"(\d+)\s*分", text)
+        if m:
+            minutes = int(m.group(1))
+        return timedelta(hours=hours, minutes=minutes)
+    
+    @staticmethod
+    def format_datetime_to_string(dt) -> str:
+        """
+        將 datetime 轉成字串 "YYYY-MM-DD HH:MM"，無效則回傳空字串。
+        
+        Args:
+            dt (datetime): 要轉換的日期時間物件。
+            
+        Returns:
+            str: 格式化後的日期時間字串，失敗時回傳空字串。
+            
+        Examples:
+            >>> from datetime import datetime
+            >>> FlightDataCleaner.format_datetime_to_string(datetime(2025, 10, 15, 14, 30))
+            '2025-10-15 14:30'
+            
+        Raises:
+            無明確錯誤，轉換失敗時回傳空字串
+        """
+        try:
+            return dt.strftime("%Y-%m-%d %H:%M")
+        except (AttributeError, ValueError):
+            return ""
+    
+    @staticmethod
+    def format_timedelta_to_hhmm(td) -> str:
+        """
+        將 timedelta 轉成 "HH:MM"，若為 0 或無效則回傳空字串。
+        
+        Args:
+            td (timedelta): 要轉換的時間段。
+            
+        Returns:
+            str: 格式化後的時間字串，失敗或為 0 時回傳空字串。
+            
+        Examples:
+            >>> from datetime import timedelta
+            >>> FlightDataCleaner.format_timedelta_to_hhmm(timedelta(hours=3, minutes=25))
+            '03:25'
+            
+        Raises:
+            無明確錯誤，轉換失敗時回傳空字串
+        """
+        try:
+            total_minutes = int(td.total_seconds() // 60)
+            if total_minutes <= 0:
+                return ""
+            hours = total_minutes // 60
+            minutes = total_minutes % 60
+            return f"{hours:02d}:{minutes:02d}"
+        except (AttributeError, ValueError):
+            return ""
+    
+    @staticmethod
+    def extract_iata(text: str) -> str:
+        """
+        自機場描述文字中擷取 IATA 三字碼。
+
+        Args:
+            text (str): 例如 "SFO 舊金山 舊金山國際機場" 的字串。
+
+        Returns:
+            str: 擷取到的三字碼 (例如 "SFO")；若無則回傳空字串。
+            
+        Examples:
+            >>> FlightDataCleaner.extract_iata("SFO 舊金山 舊金山國際機場")
+            'SFO'
+            
+        Raises:
+            無明確錯誤，找不到時回傳空字串
+        """
+        if not text:
+            return ""
+        m = re.match(r"\s*([A-Z]{3})\b", text.strip())
+        return m.group(1) if m else ""
+    
+    @staticmethod
+    def parse_flight_and_cabin(text: str) -> tuple:
+        """
+        解析航班與艙等資訊字串，取得航班號與「艙等+訂位代碼」。
+
+        Args:
+            text (str): 例如 "UA852 經濟艙 K" 的字串。
+
+        Returns:
+            tuple[str, str]: (航班號, 艙等與艙等編碼)。若無法解析：回傳 (原字串或空, 空)。
+            
+        Examples:
+            >>> FlightDataCleaner.parse_flight_and_cabin("UA852 經濟艙 K")
+            ('UA852', '經濟艙K')
+            
+        Raises:
+            無明確錯誤，無法解析時回傳 (原字串或空, 空)
+        """
+        if not text:
+            return "", ""
+        m = re.match(r"\s*([A-Z0-9]{2,3})\s?(\d+)\s+(\S*?)\s*([A-Z])\s*$", text)
+        if m:
+            flight_no = m.group(1) + m.group(2)
+            cabin = m.group(3)
+            booking = m.group(4)
+            return flight_no, f"{cabin}{booking}"
+        m2 = re.search(r"([A-Z0-9]{2,3})\s?(\d+)", text)
+        if m2:
+            flight_no = m2.group(1) + m2.group(2)
+            m3 = re.search(r"([\u4e00-\u9fa5A-Za-z]+)\s*([A-Z])\s*$", text)
+            if m3:
+                return flight_no, f"{m3.group(1)}{m3.group(2)}"
+            return flight_no, ""
+        parts = text.split()
+        if len(parts) >= 3:
+            return parts[0], f"{parts[1]}{parts[2]}"
+        return text.strip(), ""
+    
+    def clean_flight_data(self, card: webdriver.remote.webelement.WebElement,
+                         start_date: str, return_date: str) -> list:
+        """
+        自單張航班卡片的「航班明細」區塊抽取並清洗資料。
+        
+        會解析去程與回程、各最多三段航段，過濾轉機灰條列，並整理為欄位化結構。
+
+        Args:
+            card (webdriver.remote.webelement.WebElement): 航班卡片根元素。
+            start_date (str): 去程日期，格式 'YYYY/MM/DD'，僅用於推斷年份。
+            return_date (str): 回程日期，格式 'YYYY/MM/DD'，僅用於推斷年份。
+
+        Returns:
+            list[dict]: 只包含一筆紀錄的列表。包含去/回程各航段 1~3 的詳細資訊。
+            
+        Examples:
+            >>> cleaner = FlightDataCleaner()
+            >>> data = cleaner.clean_flight_data(card, "2025/10/15", "2025/10/20")
+            >>> data[0]['去程航班編號1']
+            'BR123'
+
+        Raises:
+            ValueError: 當日期格式不正確時
+            AttributeError: 當網頁元素找不到時
+        """
+        return extract_and_clean_flight_data(card, start_date, return_date)
+    
+    def clean_price_data(self, card: webdriver.remote.webelement.WebElement) -> list:
+        """
+        自單張航班卡片的「票價」區塊抽取並清洗資料。
+
+        Args:
+            card (webdriver.remote.webelement.WebElement): 航班卡片根元素。
+
+        Returns:
+            list[dict]: 只包含一筆紀錄的列表。包含票價相關欄位。
+            
+        Examples:
+            >>> cleaner = FlightDataCleaner()
+            >>> data = cleaner.clean_price_data(card)
+            >>> data[0]['總售價']
+            8346
+
+        Raises:
+            ValueError: 當資料格式不正確時
+        """
+        return extract_and_clean_price_data(card)
+    
+    def clean_baggage_data(self, card: webdriver.remote.webelement.WebElement,
+                          driver: webdriver.Chrome,
+                          flight_details: dict) -> dict:
+        """
+        從航班卡片中提取並清理行李資訊。
+
+        Args:
+            card (webdriver.remote.webelement.WebElement): 當前的航班卡片元素。
+            driver (webdriver.Chrome): 用於操作的 WebDriver。
+            flight_details (dict): 當前航班的詳細資訊，用於判斷行李去回程。
+
+        Returns:
+            dict: 包含結構化行李數據的字典。
+            
+        Examples:
+            >>> cleaner = FlightDataCleaner()
+            >>> data = cleaner.clean_baggage_data(card, driver, flight_info)
+            >>> data['去程行李1']
+            '30公斤'
+
+        Raises:
+            ValueError: 當資料格式不正確時
+            AttributeError: 當網頁元素找不到時
+        """
+        return extract_and_clean_baggage_data(card, driver, flight_details)
+
 
 def parse_date_time(text: str, year: int) -> datetime:
     """
@@ -769,6 +1300,158 @@ def extract_and_clean_price_data(card):
     results.append(record)
     return results
 
+class CrawlerOrchestrator:
+    """
+    爬蟲系統的流程控制器，負責協調所有組件完成整體爬取任務。
+    
+    此類別遵循依賴反轉原則，依賴於抽象接口而非具體實現，
+    並且負責整合所有功能類別來完成完整的爬取流程。
+    
+    屬性:
+        driver (webdriver.Chrome): Selenium WebDriver 實例。
+        data_cleaner (FlightDataCleaner): 資料清理器。
+        website_navigator (WebsiteNavigator): 網站導航器。
+        login_manager (CaptchaLoginManager): 登入管理器。
+        data_uploader (DataUploader): 資料上傳器。
+        
+    方法:
+        crawl_flights(origin, destination, start_date, return_date): 爬取單個航線的資料。
+        run_tasks(date_combinations): 執行多個爬取任務。
+    
+    Examples:
+        >>> orchestrator = CrawlerOrchestrator(
+        ...     username='user',
+        ...     password='pass',
+        ...     captcha_model_path='model.keras',
+        ...     project_id='my-project',
+        ...     dataset_table='dataset.table'
+        ... )
+        >>> df = orchestrator.crawl_flights('TPE', 'TYO', '2025/10/15', '2025/10/20')
+    
+    Raises:
+        ValueError: 當參數不正確時
+        Exception: 當爬取過程發生錯誤時
+    """
+    
+    def __init__(self, username: str, password: str, captcha_model_path: str,
+                 project_id: str, dataset_table: str):
+        """
+        初始化 CrawlerOrchestrator 及所有相依組件。
+        
+        Args:
+            username (str): 登入帳號。
+            password (str): 登入密碼。
+            captcha_model_path (str): 驗證碼模型路徑。
+            project_id (str): Google Cloud 專案 ID。
+            dataset_table (str): BigQuery 資料集和表格名稱。
+            
+        Raises:
+            ValueError: 當必要參數為空時
+        """
+        if not all([username, password, captcha_model_path, project_id, dataset_table]):
+            raise ValueError("所有參數都不可為空")
+        
+        # 初始化 WebDriver
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        chrome_options.add_argument("--disable-gpu")
+        chrome_options.add_argument("--remote-debugging-port=9222")
+        chrome_options.add_argument("--window-size=1920x1080")
+        
+        if platform.machine() == 'aarch64':
+            service = ChromeService(executable_path='/usr/bin/chromedriver')
+            chrome_options.binary_location = '/usr/bin/chromium'
+            self.driver = webdriver.Chrome(service=service, options=chrome_options)
+        else:
+            self.driver = webdriver.Chrome(options=chrome_options)
+        
+        # 初始化所有組件
+        self.data_cleaner = FlightDataCleaner()
+        self.website_navigator = WebsiteNavigator(self.driver)
+        self.login_manager = CaptchaLoginManager(self.driver, captcha_model_path)
+        self.data_uploader = DataUploader(project_id, dataset_table)
+        
+        # 儲存登入資訊
+        self.username = username
+        self.password = password
+    
+    def crawl_flights(self, origin_code: str, destination_code: str,
+                     start_date: str, return_date: str) -> pd.DataFrame:
+        """
+        爬取單個航線的機票資料。
+        
+        Args:
+            origin_code (str): 出發地代碼 (例如 'TPE')。
+            destination_code (str): 目的地代碼 (例如 'TYO')。
+            start_date (str): 出發日期，格式為 'YYYY/MM/DD'。
+            return_date (str): 返回日期，格式為 'YYYY/MM/DD'。
+            
+        Returns:
+            pd.DataFrame: 爬取並清理後的航班資料。
+            
+        Examples:
+            >>> orchestrator = CrawlerOrchestrator(...)
+            >>> df = orchestrator.crawl_flights('TPE', 'TYO', '2025/10/15', '2025/10/20')
+            
+        Raises:
+            ValueError: 當參數不正確時
+            Exception: 當爬取過程發生錯誤時
+        """
+        return main(origin_code, destination_code, start_date, return_date)
+    
+    def run_tasks(self, origin_code: str, destination_code: str,
+                 date_info_list: List[Dict[str, str]]) -> None:
+        """
+        執行多個爬取任務並上傳資料。
+        
+        Args:
+            origin_code (str): 出發地代碼。
+            destination_code (str): 目的地代碼。
+            date_info_list (List[Dict[str, str]]): 日期資訊列表，每個元素包含 departure_date 和 return_date。
+            
+        Examples:
+            >>> orchestrator = CrawlerOrchestrator(...)
+            >>> dates = [
+            ...     {'departure_date': '2025-10-15', 'return_date': '2025-10-20'},
+            ...     {'departure_date': '2025-11-15', 'return_date': '2025-11-20'}
+            ... ]
+            >>> orchestrator.run_tasks('TPE', 'TYO', dates)
+            
+        Raises:
+            ValueError: 當資料格式不正確時
+        """
+        for date_info in date_info_list:
+            start_date = date_info['departure_date'].replace('-', '/')
+            return_date = date_info['return_date'].replace('-', '/')
+            
+            print(f"處理航線: {origin_code} -> {destination_code}, "
+                  f"出發日期: {start_date}, 回程日期: {return_date}")
+            
+            try:
+                final_df = self.crawl_flights(origin_code, destination_code,
+                                             start_date, return_date)
+                self.data_uploader.upload_to_bigquery(final_df)
+            except Exception as e:
+                print(f"處理日期 {start_date} - {return_date} 時發生錯誤: {e}")
+                continue
+    
+    def cleanup(self) -> None:
+        """
+        清理資源，關閉 WebDriver。
+        
+        Examples:
+            >>> orchestrator = CrawlerOrchestrator(...)
+            >>> orchestrator.cleanup()
+            
+        Raises:
+            無明確錯誤
+        """
+        if self.driver:
+            self.driver.quit()
+
+
 def main(origin_code: str, 
          destination_code: str, 
          start_date: str, 
@@ -956,6 +1639,197 @@ def main(origin_code: str,
         final_df = pd.DataFrame(columns=column_order)
 
     return final_df
+
+class WebsiteNavigator:
+    """
+    負責網站操作和導航的類別。
+    
+    此類別遵循單一職責原則，專注於網站的導航、頁面操作等功能，
+    不包含登入或資料處理邏輯。
+    
+    屬性:
+        driver (webdriver.Chrome): Selenium WebDriver 實例。
+    
+    方法:
+        navigate_to_flight_page(origin, destination, start_date, return_date): 導航到航班查詢頁。
+        scroll_to_bottom(): 滾動到頁面底部。
+        expand_flight_options(): 展開所有航班選項。
+    
+    Examples:
+        >>> navigator = WebsiteNavigator(driver)
+        >>> navigator.navigate_to_flight_page('TPE', 'TYO', '2025/10/15', '2025/10/20')
+        >>> navigator.expand_flight_options()
+    
+    Raises:
+        ValueError: 當參數不正確時
+        TimeoutException: 當頁面載入超時時
+    """
+    
+    def __init__(self, driver: webdriver.Chrome):
+        """
+        初始化 WebsiteNavigator。
+        
+        Args:
+            driver (webdriver.Chrome): Selenium WebDriver 實例。
+        """
+        self.driver = driver
+    
+    def navigate_to_flight_page(self, origin_code: str, destination_code: str,
+                                start_date: str, return_date: str) -> None:
+        """
+        導航至指定的機票查詢頁面。
+        
+        Args:
+            origin_code (str): 出發地代碼 (例如 'TPE')。
+            destination_code (str): 目的地代碼 (例如 'TYO')。
+            start_date (str): 出發日期，格式為 'YYYY/MM/DD'。
+            return_date (str): 返回日期，格式為 'YYYY/MM/DD'。
+            
+        Examples:
+            >>> navigator = WebsiteNavigator(driver)
+            >>> navigator.navigate_to_flight_page('TPE', 'TYO', '2025/10/15', '2025/10/20')
+            
+        Raises:
+            ValueError: 當日期格式不正確時
+        """
+        if not all([origin_code, destination_code, start_date, return_date]):
+            raise ValueError("所有參數都不可為空")
+        
+        url = (f'https://www.colatour.com.tw/C10C_MPAirTicket/C10C_20_ChooseLowFare.aspx?'
+               f'DirectFlightMark=False&JourneyType=Round&OriginCode={origin_code}&'
+               f'DestinationCode={destination_code}&ReturnCode={destination_code}&'
+               f'StartDate={start_date}&ReturnDate={return_date}&AdtCnt=1&ChdCnt=0&'
+               f'InfantCnt=0&ServiceClass=ALL&SegmentStartDate={start_date.replace("/", "_")},'
+               f'{return_date.replace("/", "_")}&SegmentLocCode={origin_code}.{destination_code},'
+               f'{destination_code}.{origin_code}&SegmentLocType=City.City,City.City')
+        self.driver.get(url)
+        self.driver.set_window_size(945, 1012)
+    
+    def scroll_to_bottom(self) -> None:
+        """
+        滾動至網頁底部，以加載所有內容。
+        
+        此方法持續執行滾動操作，直到頁面無法再向下滾動為止。
+        
+        Examples:
+            >>> navigator = WebsiteNavigator(driver)
+            >>> navigator.scroll_to_bottom()
+            
+        Raises:
+            無明確錯誤
+        """
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
+        while True:
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(1)
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
+            if new_height == last_height:
+                break
+            last_height = new_height
+    
+    def expand_flight_options(self) -> None:
+        """
+        展開所有可用的航班選項，點擊所有"更多航班"按鈕。
+        
+        Examples:
+            >>> navigator = WebsiteNavigator(driver)
+            >>> navigator.expand_flight_options()
+            
+        Raises:
+            TimeoutException: 當頁面元素載入超時時
+        """
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_all_elements_located((By.CLASS_NAME, 'airPrice_box'))
+        )
+        
+        expand_buttons = self.driver.find_elements(
+            By.XPATH, "//a[contains(@class, 'plusBtn') and contains(text(), '更多航班')]"
+        )
+        
+        print(f"找到 {len(expand_buttons)} 個更多航班按鈕")
+        
+        for i, button in enumerate(expand_buttons):
+            try:
+                self.driver.execute_script("arguments[0].scrollIntoView();", button)
+                time.sleep(0.5)
+                self.driver.execute_script("arguments[0].click();", button)
+                print(f"已展開第 {i+1} 個航班選項")
+            except Exception as e:
+                print(f"點擊第 {i+1} 個展開按鈕時發生錯誤: {e}")
+                continue
+        
+        print("所有航班選項已展開完成")
+
+
+class DataUploader:
+    """
+    負責資料上傳到 BigQuery 的類別。
+    
+    此類別遵循單一職責原則，專注於資料上傳功能，
+    與資料處理和爬取邏輯分離。
+    
+    屬性:
+        project_id (str): Google Cloud 專案 ID。
+        dataset_table (str): BigQuery 資料集和表格名稱。
+    
+    方法:
+        upload_to_bigquery(dataframe): 上傳 DataFrame 到 BigQuery。
+    
+    Examples:
+        >>> uploader = DataUploader('my-project', 'dataset.table')
+        >>> uploader.upload_to_bigquery(df)
+    
+    Raises:
+        ValueError: 當專案 ID 或表格名稱為空時
+        Exception: 當上傳失敗時
+    """
+    
+    def __init__(self, project_id: str, dataset_table: str):
+        """
+        初始化 DataUploader。
+        
+        Args:
+            project_id (str): Google Cloud 專案 ID。
+            dataset_table (str): BigQuery 資料集和表格名稱 (格式: 'dataset.table')。
+            
+        Raises:
+            ValueError: 當參數為空時
+        """
+        if not project_id or not dataset_table:
+            raise ValueError("project_id 和 dataset_table 不可為空")
+        
+        self.project_id = project_id
+        self.dataset_table = dataset_table
+    
+    def upload_to_bigquery(self, dataframe: pd.DataFrame) -> None:
+        """
+        上傳 DataFrame 到 BigQuery。
+        
+        Args:
+            dataframe (pd.DataFrame): 要上傳的資料。
+            
+        Examples:
+            >>> uploader = DataUploader('my-project', 'economy.table')
+            >>> uploader.upload_to_bigquery(df)
+            
+        Raises:
+            ValueError: 當 DataFrame 為空時
+            Exception: 當上傳失敗時
+        """
+        if dataframe.empty:
+            print("警告: DataFrame 為空，跳過上傳")
+            return
+        
+        try:
+            dataframe.to_gbq(
+                self.dataset_table,
+                if_exists='append',
+                project_id=self.project_id
+            )
+            print(f"成功寫入 {len(dataframe)} 筆資料到 BigQuery")
+        except Exception as e:
+            raise Exception(f"上傳到 BigQuery 失敗: {e}") from e
+
 
 def login_to_site(navigator, username: str, password: str, captcha_model_path: str):
     """
