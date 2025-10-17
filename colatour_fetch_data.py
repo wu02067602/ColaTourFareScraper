@@ -1111,7 +1111,7 @@ def navigate_to_flight_page(driver: webdriver.Chrome,
 
 if __name__ == "__main__":
     IATA_ID = os.getenv('IATA_ID')
-    for iata in [['TPE', 'AMS']
+    for iata in [['TPE', IATA_ID]
                 ]:
         for date in [
             [[2025, 12, 5], [2025, 12, 10]],
