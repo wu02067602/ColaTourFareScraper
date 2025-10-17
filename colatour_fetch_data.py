@@ -34,6 +34,7 @@ import json
 # )
 
 PROJECT_ID = os.getenv('PROJECT_ID')
+API_BASE_URL = os.getenv('API_BASE_URL', 'http://localhost:8000')
 
 class ImageProcessor:
     """
@@ -1107,21 +1108,100 @@ def navigate_to_flight_page(driver: webdriver.Chrome,
     driver.get(url)
     driver.set_window_size(945, 1012)
 
+def fetch_holiday_dates_from_api(month_offset: int) -> List[Dict[str, str]]:
+    """
+    從 API 取得指定月份偏移量的節日日期資訊。
+    
+    Args:
+        month_offset (int): 月份偏移量，表示從當前月份往後推幾個月（必須 >= 0）
+    
+    Returns:
+        List[Dict[str, str]]: 節日日期列表，每個元素包含 departure_date 和 return_date
+    
+    Examples:
+        >>> dates = fetch_holiday_dates_from_api(2)
+        >>> dates[0]['departure_date']
+        '2025-12-21'
+    
+    Raises:
+        requests.exceptions.RequestException: 當 API 請求失敗時
+        ValueError: 當 month_offset 小於 0 時
+        KeyError: 當 API 回應格式不符合預期時
+    """
+    if month_offset < 0:
+        raise ValueError(f"month_offset 必須大於等於 0，目前值為 {month_offset}")
+    
+    api_url = f"{API_BASE_URL}/calculate_holiday_dates"
+    payload = {"month_offset": month_offset}
+    
+    try:
+        response = requests.post(api_url, json=payload, timeout=10)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        raise requests.exceptions.RequestException(f"API 請求失敗: {e}") from e
+    
+    try:
+        data = response.json()
+    except json.JSONDecodeError as e:
+        raise ValueError(f"API 回應格式錯誤，無法解析 JSON: {e}") from e
+    
+    if not data.get("success"):
+        error_msg = data.get("error", "未知錯誤")
+        raise ValueError(f"API 回應錯誤: {error_msg}")
+    
+    try:
+        holidays = data["data"]["holidays"]
+    except KeyError as e:
+        raise KeyError(f"API 回應缺少必要欄位: {e}") from e
+    
+    result = []
+    for holiday in holidays:
+        try:
+            result.append({
+                "departure_date": holiday["departure_date"],
+                "return_date": holiday["return_date"]
+            })
+        except KeyError as e:
+            raise KeyError(f"節日資料缺少必要欄位: {e}") from e
+    
+    return result
+
  
 
 if __name__ == "__main__":
     IATA_ID = os.getenv('IATA_ID')
-    for iata in [['TPE', IATA_ID]
-                ]:
-        for date in [
-            [[2025, 12, 5], [2025, 12, 10]],
-            [[2025, 12, 24], [2025, 12, 28]],
-            [[2026, 4, 1], [2026, 4, 5]],
-            [[2026, 4, 24], [2026, 4, 28]],
-            ]:
-            print(iata[0], iata[1], date[0][0], date[0][1], date[0][2], date[1][0], date[1][1], date[1][2])
-            final_df = main(origin_code=iata[0],
-                            destination_code=iata[1],
-                            start_date=str(date[0][0]) + '/' + str(date[0][1]) + '/' + str(date[0][2]),
-                            return_date=str(date[1][0]) + '/' + str(date[1][1]) + '/' + str(date[1][2]))
-            final_df.to_gbq('economy.New_cola_air_tickets_price', if_exists='append', project_id="testing-cola-rd")
+    
+    # 從 API 取得 2 個月後和 6 個月後的節日日期
+    month_offsets = [2, 6]
+    all_dates = []
+    
+    for offset in month_offsets:
+        try:
+            holidays = fetch_holiday_dates_from_api(offset)
+            all_dates.extend(holidays)
+            print(f"成功取得 {offset} 個月後的節日日期，共 {len(holidays)} 筆")
+        except (requests.exceptions.RequestException, ValueError, KeyError) as e:
+            print(f"取得 {offset} 個月後的日期時發生錯誤: {e}")
+            continue
+    
+    if not all_dates:
+        print("警告: 未能取得任何日期資料，程式終止")
+    else:
+        for iata in [['TPE', IATA_ID]]:
+            for date_info in all_dates:
+                # 將 API 回傳的日期格式 'YYYY-MM-DD' 轉換為 'YYYY/MM/DD'
+                start_date = date_info['departure_date'].replace('-', '/')
+                return_date = date_info['return_date'].replace('-', '/')
+                
+                print(f"處理航線: {iata[0]} -> {iata[1]}, 出發日期: {start_date}, 回程日期: {return_date}")
+                
+                try:
+                    final_df = main(origin_code=iata[0],
+                                    destination_code=iata[1],
+                                    start_date=start_date,
+                                    return_date=return_date)
+                    final_df.to_gbq('economy.New_cola_air_tickets_price', if_exists='append', project_id="testing-cola-rd")
+                    print(f"成功寫入 {len(final_df)} 筆資料到 BigQuery")
+                except Exception as e:
+                    print(f"處理日期 {start_date} - {return_date} 時發生錯誤: {e}")
+                    continue
