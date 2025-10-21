@@ -1131,6 +1131,11 @@ def get_holiday_dates(month_offset: int) -> List[Dict]:
         raise requests.exceptions.RequestException(f"API 請求超時: {e}")
     except requests.exceptions.RequestException as e:
         raise requests.exceptions.RequestException(f"API 請求失敗: {e}")
+    except json.JSONDecodeError as e:
+        import pickle
+        with open('error_result.pkl', 'wb') as f:
+            pickle.dump(result, f)
+        raise json.JSONDecodeError(f"API 回應格式錯誤: {e}")
     except KeyError as e:
         raise KeyError(f"API 回應格式錯誤，缺少必要欄位: {e}")
 
@@ -1198,6 +1203,11 @@ def get_fixed_dates(month_offset: int, dep_day: int, return_day: int) -> Dict:
         raise requests.exceptions.RequestException(f"API 請求超時: {e}")
     except requests.exceptions.RequestException as e:
         raise requests.exceptions.RequestException(f"API 請求失敗: {e}")
+    except json.JSONDecodeError as e:
+        import pickle
+        with open('error_result.pkl', 'wb') as f:
+            pickle.dump(result, f)
+        raise json.JSONDecodeError(f"API 回應格式錯誤: {e}")
     except KeyError as e:
         raise KeyError(f"API 回應格式錯誤，缺少必要欄位: {e}")
 
