@@ -1082,6 +1082,61 @@ def extract_and_clean_baggage_data(
             # 可以考慮將無法判斷的航班也加入，例如作為「未知行李X」
     return card_baggage_info
     
+def get_holiday_dates(month_offset: int) -> List[Dict]:
+    """
+    透過 API 取得指定月份偏移量的節日日期資訊。
+    
+    Args:
+        month_offset (int): 月份偏移量，表示從當前月份往後推幾個月（必須 >= 0）
+    
+    Returns:
+        List[Dict]: 節日資訊列表，每個字典包含以下欄位：
+            - holiday_name (str): 節日名稱
+            - holiday_date (str): 節日日期，格式 YYYY-MM-DD
+            - departure_date (str): 建議出發日期，格式 YYYY-MM-DD
+            - return_date (str): 建議返回日期，格式 YYYY-MM-DD
+            - weekday (str): 星期幾
+    
+    Examples:
+        >>> holidays = get_holiday_dates(2)
+        >>> print(holidays[0]['holiday_name'])
+        '行憲紀念日'
+        >>> print(holidays[0]['departure_date'])
+        '2025-12-21'
+    
+    Raises:
+        ValueError: 當 month_offset 小於 0 時
+        requests.exceptions.RequestException: 當 API 請求失敗時
+        KeyError: 當 API 回應格式不符合預期時
+    """
+    if month_offset < 0:
+        raise ValueError(f"month_offset 必須 >= 0，目前值為 {month_offset}")
+    
+    api_url = "https://domanda-get-date-data-934329676269.asia-east1.run.app/calculate_holiday_dates"
+    
+    try:
+        response = requests.post(
+            api_url,
+            json={"month_offset": month_offset},
+            timeout=10
+        )
+        response.raise_for_status()
+        
+        result = response.json()
+        
+        if not result.get("success", False):
+            raise ValueError(f"API 回應失敗: {result.get('error', '未知錯誤')}")
+        
+        holidays = result.get("data", {}).get("holidays", [])
+        return holidays
+    
+    except requests.exceptions.Timeout as e:
+        raise requests.exceptions.RequestException(f"API 請求超時: {e}")
+    except requests.exceptions.RequestException as e:
+        raise requests.exceptions.RequestException(f"API 請求失敗: {e}")
+    except KeyError as e:
+        raise KeyError(f"API 回應格式錯誤，缺少必要欄位: {e}")
+
 def navigate_to_flight_page(driver: webdriver.Chrome,
                             origin_code: str,
                             destination_code: str,
@@ -1110,6 +1165,39 @@ def navigate_to_flight_page(driver: webdriver.Chrome,
  
 
 if __name__ == "__main__":
+    # 測試 API 取得節日日期功能
+    print("=== 測試 API 取得節日日期功能 ===")
+    
+    # 取得 2 個月後的節日日期
+    print("\n--- 2 個月後的節日日期 ---")
+    try:
+        holidays_2_months = get_holiday_dates(month_offset=2)
+        for holiday in holidays_2_months:
+            print(f"節日名稱: {holiday['holiday_name']}")
+            print(f"節日日期: {holiday['holiday_date']}")
+            print(f"出發日期: {holiday['departure_date']}")
+            print(f"返回日期: {holiday['return_date']}")
+            print(f"星期: {holiday['weekday']}")
+            print()
+    except (ValueError, requests.exceptions.RequestException, KeyError) as e:
+        print(f"取得 2 個月後節日日期時發生錯誤: {e}")
+    
+    # 取得 6 個月後的節日日期
+    print("\n--- 6 個月後的節日日期 ---")
+    try:
+        holidays_6_months = get_holiday_dates(month_offset=6)
+        for holiday in holidays_6_months:
+            print(f"節日名稱: {holiday['holiday_name']}")
+            print(f"節日日期: {holiday['holiday_date']}")
+            print(f"出發日期: {holiday['departure_date']}")
+            print(f"返回日期: {holiday['return_date']}")
+            print(f"星期: {holiday['weekday']}")
+            print()
+    except (ValueError, requests.exceptions.RequestException, KeyError) as e:
+        print(f"取得 6 個月後節日日期時發生錯誤: {e}")
+    
+    print("=== API 測試完成 ===\n")
+    
     IATA_ID = os.getenv('IATA_ID')
     for iata in [['TPE', IATA_ID]
                 ]:
