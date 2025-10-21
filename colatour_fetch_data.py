@@ -1,31 +1,28 @@
-import os
-import time
+# 標準庫
 import base64
+import json
+import os
+import platform
 import re
-from typing import ParamSpec
+import time
+from datetime import datetime, timedelta
+from typing import Dict, List
 
+# 第三方庫
 import numpy as np
 import pandas as pd
-import platform
-from datetime import datetime, timedelta
-from PIL import Image
-from tensorflow.keras.preprocessing.image import img_to_array
-from tensorflow.keras.models import load_model
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.alert import Alert
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service as ChromeService
-import sentry_sdk
-
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
-from typing import Dict, List
 import requests
-import json
+import sentry_sdk
+from PIL import Image
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.alert import Alert
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
 
 # Sentry
 # sentry_sdk.init(
