@@ -1137,6 +1137,73 @@ def get_holiday_dates(month_offset: int) -> List[Dict]:
     except KeyError as e:
         raise KeyError(f"API 回應格式錯誤，缺少必要欄位: {e}")
 
+def get_fixed_dates(month_offset: int, dep_day: int, return_day: int) -> Dict:
+    """
+    透過 API 取得指定月份偏移量與固定日期的日期資訊。
+    
+    Args:
+        month_offset (int): 月份偏移量，表示從當前月份往後推幾個月（必須 >= 0）
+        dep_day (int): 出發日期的天數（1-31）
+        return_day (int): 回程日期的天數（1-31）
+    
+    Returns:
+        Dict: 日期資訊字典，包含以下欄位：
+            - departure_date (str): 出發日期，格式 YYYY-MM-DD
+            - return_date (str): 回程日期，格式 YYYY-MM-DD
+            - target_year (int): 目標年份
+            - target_month (int): 目標月份
+    
+    Examples:
+        >>> dates = get_fixed_dates(2, 5, 10)
+        >>> print(dates['departure_date'])
+        '2025-12-05'
+        >>> print(dates['return_date'])
+        '2025-12-10'
+    
+    Raises:
+        ValueError: 當 month_offset 小於 0 時
+        ValueError: 當 dep_day 或 return_day 不在 1-31 範圍內時
+        requests.exceptions.RequestException: 當 API 請求失敗時
+        KeyError: 當 API 回應格式不符合預期時
+    """
+    if month_offset < 0:
+        raise ValueError(f"month_offset 必須 >= 0，目前值為 {month_offset}")
+    
+    if not (1 <= dep_day <= 31):
+        raise ValueError(f"dep_day 必須在 1-31 之間，目前值為 {dep_day}")
+    
+    if not (1 <= return_day <= 31):
+        raise ValueError(f"return_day 必須在 1-31 之間，目前值為 {return_day}")
+    
+    api_url = "https://domanda-get-date-data-934329676269.asia-east1.run.app/calculate_dates"
+    
+    try:
+        response = requests.post(
+            api_url,
+            json={
+                "month_offset": month_offset,
+                "dep_day": dep_day,
+                "return_day": return_day
+            },
+            timeout=10
+        )
+        response.raise_for_status()
+        
+        result = response.json()
+        
+        if not result.get("success", False):
+            raise ValueError(f"API 回應失敗: {result.get('error', '未知錯誤')}")
+        
+        dates = result.get("data", {})
+        return dates
+    
+    except requests.exceptions.Timeout as e:
+        raise requests.exceptions.RequestException(f"API 請求超時: {e}")
+    except requests.exceptions.RequestException as e:
+        raise requests.exceptions.RequestException(f"API 請求失敗: {e}")
+    except KeyError as e:
+        raise KeyError(f"API 回應格式錯誤，缺少必要欄位: {e}")
+
 def navigate_to_flight_page(driver: webdriver.Chrome,
                             origin_code: str,
                             destination_code: str,
@@ -1196,7 +1263,34 @@ if __name__ == "__main__":
     except (ValueError, requests.exceptions.RequestException, KeyError) as e:
         print(f"取得 6 個月後節日日期時發生錯誤: {e}")
     
-    print("=== API 測試完成 ===\n")
+    print("=== 節日日期 API 測試完成 ===\n")
+    
+    # 測試 API 取得固定月份日期功能
+    print("=== 測試 API 取得固定月份日期功能 ===")
+    
+    # 取得 2 個月後，5 號去 10 號回的日期
+    print("\n--- 2 個月後（5 號去 10 號回）---")
+    try:
+        dates_2_months = get_fixed_dates(month_offset=2, dep_day=5, return_day=10)
+        print(f"目標年份: {dates_2_months['target_year']}")
+        print(f"目標月份: {dates_2_months['target_month']}")
+        print(f"出發日期: {dates_2_months['departure_date']}")
+        print(f"返回日期: {dates_2_months['return_date']}")
+    except (ValueError, requests.exceptions.RequestException, KeyError) as e:
+        print(f"取得 2 個月後固定日期時發生錯誤: {e}")
+    
+    # 取得 6 個月後，5 號去 10 號回的日期
+    print("\n--- 6 個月後（5 號去 10 號回）---")
+    try:
+        dates_6_months = get_fixed_dates(month_offset=6, dep_day=5, return_day=10)
+        print(f"目標年份: {dates_6_months['target_year']}")
+        print(f"目標月份: {dates_6_months['target_month']}")
+        print(f"出發日期: {dates_6_months['departure_date']}")
+        print(f"返回日期: {dates_6_months['return_date']}")
+    except (ValueError, requests.exceptions.RequestException, KeyError) as e:
+        print(f"取得 6 個月後固定日期時發生錯誤: {e}")
+    
+    print("\n=== 固定月份日期 API 測試完成 ===\n")
     
     IATA_ID = os.getenv('IATA_ID')
     for iata in [['TPE', IATA_ID]

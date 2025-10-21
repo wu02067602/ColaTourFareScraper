@@ -67,6 +67,38 @@ API 回應包含以下欄位：
 - `return_date`: 建議返回日期（格式：YYYY-MM-DD）
 - `weekday`: 星期幾
 
+### API 取得固定月份日期功能
+
+本專案整合了固定月份日期查詢 API，可自動取得未來指定月份的固定日期資訊。
+
+#### 使用範例
+
+**取得 2 個月後（5 號去 10 號回）的日期：**
+```python
+from colatour_fetch_data import get_fixed_dates
+
+# 取得 2 個月後，5 號去 10 號回的日期
+dates = get_fixed_dates(month_offset=2, dep_day=5, return_day=10)
+print(f"出發日期: {dates['departure_date']}")
+print(f"返回日期: {dates['return_date']}")
+```
+
+**取得 6 個月後（5 號去 10 號回）的日期：**
+```python
+# 取得 6 個月後，5 號去 10 號回的日期
+dates = get_fixed_dates(month_offset=6, dep_day=5, return_day=10)
+print(f"出發日期: {dates['departure_date']}")
+print(f"返回日期: {dates['return_date']}")
+```
+
+#### API 回應格式
+
+API 回應包含以下欄位：
+- `departure_date`: 出發日期（格式：YYYY-MM-DD）
+- `return_date`: 返回日期（格式：YYYY-MM-DD）
+- `target_year`: 目標年份
+- `target_month`: 目標月份
+
 ## 常見問題
 1. **為什麼我的爬蟲無法正常運行？**
    - 請確認 ChromeDriver 的版本與 Chrome 瀏覽器版本匹配。
