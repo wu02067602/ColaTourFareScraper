@@ -1231,79 +1231,112 @@ def navigate_to_flight_page(driver: webdriver.Chrome,
 
  
 
+def generate_date_pairs_from_api() -> List[List[List[int]]]:
+    """
+    透過 API 動態生成爬取日期列表。
+    
+    此函數會從 API 取得未來幾個月的節日日期和固定日期，並組合成日期對列表。
+    
+    Returns:
+        List[List[List[int]]]: 日期對列表，格式為 [[[year, month, day], [year, month, day]], ...]
+            每個日期對包含出發日期和返回日期
+    
+    Examples:
+        >>> date_pairs = generate_date_pairs_from_api()
+        >>> print(date_pairs[0])
+        [[2025, 12, 5], [2025, 12, 10]]
+    
+    Raises:
+        ValueError: 當 API 回應格式錯誤時
+        requests.exceptions.RequestException: 當 API 請求失敗時
+    """
+    date_pairs = []
+    
+    # 定義要查詢的月份偏移量列表（例如：2個月後、6個月後）
+    month_offsets = [2, 6]
+    
+    # 1. 從 API 取得節日日期
+    print("=== 從 API 取得節日日期 ===")
+    for month_offset in month_offsets:
+        try:
+            holidays = get_holiday_dates(month_offset=month_offset)
+            for holiday in holidays:
+                departure_str = holiday['departure_date']  # 格式: YYYY-MM-DD
+                return_str = holiday['return_date']        # 格式: YYYY-MM-DD
+                
+                # 解析日期字串
+                dep_parts = departure_str.split('-')
+                ret_parts = return_str.split('-')
+                
+                date_pair = [
+                    [int(dep_parts[0]), int(dep_parts[1]), int(dep_parts[2])],
+                    [int(ret_parts[0]), int(ret_parts[1]), int(ret_parts[2])]
+                ]
+                date_pairs.append(date_pair)
+                
+                print(f"新增節日日期: {holiday['holiday_name']} - {departure_str} 到 {return_str}")
+        except (ValueError, requests.exceptions.RequestException, KeyError) as e:
+            print(f"取得 {month_offset} 個月後節日日期時發生錯誤: {e}")
+    
+    # 2. 從 API 取得固定日期（例如：每月 5 號去 10 號回、24 號去 28 號回）
+    print("\n=== 從 API 取得固定日期 ===")
+    fixed_date_configs = [
+        {'dep_day': 5, 'return_day': 10},
+        {'dep_day': 24, 'return_day': 28},
+    ]
+    
+    for month_offset in month_offsets:
+        for config in fixed_date_configs:
+            try:
+                dates = get_fixed_dates(
+                    month_offset=month_offset,
+                    dep_day=config['dep_day'],
+                    return_day=config['return_day']
+                )
+                
+                departure_str = dates['departure_date']  # 格式: YYYY-MM-DD
+                return_str = dates['return_date']        # 格式: YYYY-MM-DD
+                
+                # 解析日期字串
+                dep_parts = departure_str.split('-')
+                ret_parts = return_str.split('-')
+                
+                date_pair = [
+                    [int(dep_parts[0]), int(dep_parts[1]), int(dep_parts[2])],
+                    [int(ret_parts[0]), int(ret_parts[1]), int(ret_parts[2])]
+                ]
+                date_pairs.append(date_pair)
+                
+                print(f"新增固定日期: {departure_str} 到 {return_str}")
+            except (ValueError, requests.exceptions.RequestException, KeyError) as e:
+                print(f"取得 {month_offset} 個月後固定日期（{config['dep_day']}號-{config['return_day']}號）時發生錯誤: {e}")
+    
+    print(f"\n=== 共生成 {len(date_pairs)} 組日期 ===\n")
+    return date_pairs
+
 if __name__ == "__main__":
-    # 測試 API 取得節日日期功能
-    print("=== 測試 API 取得節日日期功能 ===")
+    # 使用 API 動態生成日期列表
+    date_pairs = generate_date_pairs_from_api()
     
-    # 取得 2 個月後的節日日期
-    print("\n--- 2 個月後的節日日期 ---")
-    try:
-        holidays_2_months = get_holiday_dates(month_offset=2)
-        for holiday in holidays_2_months:
-            print(f"節日名稱: {holiday['holiday_name']}")
-            print(f"節日日期: {holiday['holiday_date']}")
-            print(f"出發日期: {holiday['departure_date']}")
-            print(f"返回日期: {holiday['return_date']}")
-            print(f"星期: {holiday['weekday']}")
-            print()
-    except (ValueError, requests.exceptions.RequestException, KeyError) as e:
-        print(f"取得 2 個月後節日日期時發生錯誤: {e}")
-    
-    # 取得 6 個月後的節日日期
-    print("\n--- 6 個月後的節日日期 ---")
-    try:
-        holidays_6_months = get_holiday_dates(month_offset=6)
-        for holiday in holidays_6_months:
-            print(f"節日名稱: {holiday['holiday_name']}")
-            print(f"節日日期: {holiday['holiday_date']}")
-            print(f"出發日期: {holiday['departure_date']}")
-            print(f"返回日期: {holiday['return_date']}")
-            print(f"星期: {holiday['weekday']}")
-            print()
-    except (ValueError, requests.exceptions.RequestException, KeyError) as e:
-        print(f"取得 6 個月後節日日期時發生錯誤: {e}")
-    
-    print("=== 節日日期 API 測試完成 ===\n")
-    
-    # 測試 API 取得固定月份日期功能
-    print("=== 測試 API 取得固定月份日期功能 ===")
-    
-    # 取得 2 個月後，5 號去 10 號回的日期
-    print("\n--- 2 個月後（5 號去 10 號回）---")
-    try:
-        dates_2_months = get_fixed_dates(month_offset=2, dep_day=5, return_day=10)
-        print(f"目標年份: {dates_2_months['target_year']}")
-        print(f"目標月份: {dates_2_months['target_month']}")
-        print(f"出發日期: {dates_2_months['departure_date']}")
-        print(f"返回日期: {dates_2_months['return_date']}")
-    except (ValueError, requests.exceptions.RequestException, KeyError) as e:
-        print(f"取得 2 個月後固定日期時發生錯誤: {e}")
-    
-    # 取得 6 個月後，5 號去 10 號回的日期
-    print("\n--- 6 個月後（5 號去 10 號回）---")
-    try:
-        dates_6_months = get_fixed_dates(month_offset=6, dep_day=5, return_day=10)
-        print(f"目標年份: {dates_6_months['target_year']}")
-        print(f"目標月份: {dates_6_months['target_month']}")
-        print(f"出發日期: {dates_6_months['departure_date']}")
-        print(f"返回日期: {dates_6_months['return_date']}")
-    except (ValueError, requests.exceptions.RequestException, KeyError) as e:
-        print(f"取得 6 個月後固定日期時發生錯誤: {e}")
-    
-    print("\n=== 固定月份日期 API 測試完成 ===\n")
-    
+    # 取得目的地 IATA 代碼
     IATA_ID = os.getenv('IATA_ID')
-    for iata in [['TPE', IATA_ID]
-                ]:
-        for date in [
-            [[2025, 12, 5], [2025, 12, 10]],
-            [[2025, 12, 24], [2025, 12, 28]],
-            [[2026, 4, 1], [2026, 4, 5]],
-            [[2026, 4, 24], [2026, 4, 28]],
-            ]:
-            print(iata[0], iata[1], date[0][0], date[0][1], date[0][2], date[1][0], date[1][1], date[1][2])
-            final_df = main(origin_code=iata[0],
-                            destination_code=iata[1],
-                            start_date=str(date[0][0]) + '/' + str(date[0][1]) + '/' + str(date[0][2]),
-                            return_date=str(date[1][0]) + '/' + str(date[1][1]) + '/' + str(date[1][2]))
-            final_df.to_gbq('economy.New_cola_air_tickets_price', if_exists='append', project_id="testing-cola-rd")
+    
+    # 迴圈處理每個機場組合
+    for iata in [['TPE', IATA_ID]]:
+        # 迴圈處理每組日期
+        for date in date_pairs:
+            print(f"正在爬取: {iata[0]} -> {iata[1]}, "
+                  f"{date[0][0]}/{date[0][1]}/{date[0][2]} - {date[1][0]}/{date[1][1]}/{date[1][2]}")
+            
+            final_df = main(
+                origin_code=iata[0],
+                destination_code=iata[1],
+                start_date=f"{date[0][0]}/{date[0][1]}/{date[0][2]}",
+                return_date=f"{date[1][0]}/{date[1][1]}/{date[1][2]}"
+            )
+            
+            final_df.to_gbq(
+                'economy.New_cola_air_tickets_price',
+                if_exists='append',
+                project_id="testing-cola-rd"
+            )
