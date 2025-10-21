@@ -1106,7 +1106,7 @@ def get_holiday_dates(month_offset: int) -> List[Dict]:
         requests.exceptions.RequestException: 當 API 請求失敗時
         KeyError: 當 API 回應格式不符合預期時
     """
-    if month_offset < 0:
+    if month_offset <= 0:
         raise ValueError(f"month_offset 必須 >= 0，目前值為 {month_offset}")
     
     api_url = "https://domanda-get-date-data-934329676269.asia-east1.run.app/calculate_holiday_dates"
@@ -1168,7 +1168,7 @@ def get_fixed_dates(month_offset: int, dep_day: int, return_day: int) -> Dict:
         requests.exceptions.RequestException: 當 API 請求失敗時
         KeyError: 當 API 回應格式不符合預期時
     """
-    if month_offset < 0:
+    if month_offset <= 0:
         raise ValueError(f"month_offset 必須 >= 0，目前值為 {month_offset}")
     
     if not (1 <= dep_day <= 31):
