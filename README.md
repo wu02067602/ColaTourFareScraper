@@ -30,6 +30,75 @@ ColaTourFareScraper 是一個用於爬取可樂旅遊網站上機票票價的專
    ```
 3. 輸入所需的出發地、目的地、出發日期和返回日期，系統將自動導航並抓取相關數據。
 
+### API 取得節日日期功能
+
+本專案整合了節日日期查詢 API，可自動取得未來月份的節日日期資訊。
+
+#### 使用範例
+
+**取得 2 個月後的節日日期：**
+```python
+from colatour_fetch_data import get_holiday_dates
+
+# 取得 2 個月後的節日日期
+holidays = get_holiday_dates(month_offset=2)
+for holiday in holidays:
+    print(f"節日名稱: {holiday['holiday_name']}")
+    print(f"出發日期: {holiday['departure_date']}")
+    print(f"返回日期: {holiday['return_date']}")
+```
+
+**取得 6 個月後的節日日期：**
+```python
+# 取得 6 個月後的節日日期
+holidays = get_holiday_dates(month_offset=6)
+for holiday in holidays:
+    print(f"節日名稱: {holiday['holiday_name']}")
+    print(f"出發日期: {holiday['departure_date']}")
+    print(f"返回日期: {holiday['return_date']}")
+```
+
+#### API 回應格式
+
+API 回應包含以下欄位：
+- `holiday_name`: 節日名稱
+- `holiday_date`: 節日日期（格式：YYYY-MM-DD）
+- `departure_date`: 建議出發日期（格式：YYYY-MM-DD）
+- `return_date`: 建議返回日期（格式：YYYY-MM-DD）
+- `weekday`: 星期幾
+
+### API 取得固定月份日期功能
+
+本專案整合了固定月份日期查詢 API，可自動取得未來指定月份的固定日期資訊。
+
+#### 使用範例
+
+**取得 2 個月後（5 號去 10 號回）的日期：**
+```python
+from colatour_fetch_data import get_fixed_dates
+
+# 取得 2 個月後，5 號去 10 號回的日期
+dates = get_fixed_dates(month_offset=2, dep_day=5, return_day=10)
+print(f"出發日期: {dates['departure_date']}")
+print(f"返回日期: {dates['return_date']}")
+```
+
+**取得 6 個月後（5 號去 10 號回）的日期：**
+```python
+# 取得 6 個月後，5 號去 10 號回的日期
+dates = get_fixed_dates(month_offset=6, dep_day=5, return_day=10)
+print(f"出發日期: {dates['departure_date']}")
+print(f"返回日期: {dates['return_date']}")
+```
+
+#### API 回應格式
+
+API 回應包含以下欄位：
+- `departure_date`: 出發日期（格式：YYYY-MM-DD）
+- `return_date`: 返回日期（格式：YYYY-MM-DD）
+- `target_year`: 目標年份
+- `target_month`: 目標月份
+
 ## 常見問題
 1. **為什麼我的爬蟲無法正常運行？**
    - 請確認 ChromeDriver 的版本與 Chrome 瀏覽器版本匹配。
