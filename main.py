@@ -9,12 +9,14 @@ ColaTourFareScraper 主程式入口
 
 # 標準庫
 import os
+import dotenv
 
 # 本地模組
 from api_client import DatePairGenerator
 from data_uploader import BigQueryUploader
 from task_controller import ScraperTaskController
 
+dotenv.load_dotenv()
 
 def main():
     """

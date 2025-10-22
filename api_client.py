@@ -4,6 +4,8 @@ from typing import Dict, List
 
 # 第三方庫
 import requests
+import google.auth.transport.requests
+import google.oauth2.id_token
 
 
 class DateAPIClient:
@@ -19,15 +21,15 @@ class DateAPIClient:
         requests.exceptions.RequestException: 當 API 請求失敗時
     """
     
-    HOLIDAY_API_URL = "https://domanda-get-date-data-934329676269.asia-east1.run.app/calculate_holiday_dates"
-    FIXED_DATE_API_URL = "https://domanda-get-date-data-934329676269.asia-east1.run.app/calculate_dates"
+    HOLIDAY_API_URL = "http://localhost:8080/calculate_holiday_dates"
+    FIXED_DATE_API_URL = "http://localhost:8080/calculate_dates"
     
     def get_holiday_dates(self, month_offset: int) -> List[Dict]:
         """
         透過 API 取得指定月份偏移量的節日日期資訊。
         
         Args:
-            month_offset (int): 月份偏移量，表示從當前月份往後推幾個月（必須 >= 0）
+            month_offset (int): 月份偏移量，表示從當前月份往後推幾個月（必須 > 0）
         
         Returns:
             List[Dict]: 節日資訊列表，每個字典包含以下欄位：
@@ -49,13 +51,24 @@ class DateAPIClient:
             KeyError: 當 API 回應格式不符合預期時
         """
         if month_offset <= 0:
-            raise ValueError(f"month_offset 必須 >= 0，目前值為 {month_offset}")
+            raise ValueError(f"month_offset 必須 > 0，目前值為 {month_offset}")
         
         try:
+            # 獲取 ID Token
+            auth_req = google.auth.transport.requests.Request()
+            id_token = google.oauth2.id_token.fetch_id_token(auth_req, self.HOLIDAY_API_URL)
+
+            # 加入 Authorization header
+            headers = {
+                "Authorization": f"Bearer {id_token}",
+                "Content-Type": "application/json"
+            }
+
             response = requests.post(
                 self.HOLIDAY_API_URL,
                 json={"month_offset": month_offset},
-                timeout=10
+                timeout=10,
+                headers=headers
             )
             response.raise_for_status()
             
@@ -117,6 +130,17 @@ class DateAPIClient:
             raise ValueError(f"return_day 必須在 1-31 之間，目前值為 {return_day}")
         
         try:
+
+            # 獲取 ID Token
+            auth_req = google.auth.transport.requests.Request()
+            id_token = google.oauth2.id_token.fetch_id_token(auth_req, self.FIXED_DATE_API_URL)
+
+            # 加入 Authorization header
+            headers = {
+                "Authorization": f"Bearer {id_token}",
+                "Content-Type": "application/json"
+            }
+
             response = requests.post(
                 self.FIXED_DATE_API_URL,
                 json={
@@ -124,7 +148,8 @@ class DateAPIClient:
                     "dep_day": dep_day,
                     "return_day": return_day
                 },
-                timeout=10
+                timeout=10,
+                headers=headers
             )
             response.raise_for_status()
             

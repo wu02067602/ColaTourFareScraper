@@ -11,7 +11,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # 本地模組
 from data_cleaner import BaggageDataExtractor, FlightDataExtractor, PriceDataExtractor
-from data_uploader import BigQueryUploader
 from web_operator import FlightOptionExpander, WebDriverFactory, WebNavigator
 
 
