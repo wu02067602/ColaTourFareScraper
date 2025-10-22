@@ -43,6 +43,9 @@ class FlightDataCollector:
             raise ValueError("driver 不可為 None")
         
         self.driver = driver
+        self.flight_extractor = FlightDataExtractor()
+        self.baggage_extractor = BaggageDataExtractor()
+        self.price_extractor = PriceDataExtractor()
     
     def collect_all_flight_data(self, start_date: str, return_date: str) -> List[dict]:
         """
@@ -132,7 +135,7 @@ class FlightDataCollector:
                     WebDriverWait(self.driver, 5).until(
                         lambda d: len(card.find_elements(By.CSS_SELECTOR, ".flightDetails_table")) >= 2
                     )
-                    flight_extracted = FlightDataExtractor.extract_and_clean_flight_data(
+                    flight_extracted = self.flight_extractor.extract_and_clean_flight_data(
                         card, start_date, return_date
                     )
 
@@ -144,7 +147,7 @@ class FlightDataCollector:
                         EC.presence_of_element_located((By.CSS_SELECTOR, ".bagInformation_tab"))
                     )
                     current_flight_details = flight_extracted[0] if flight_extracted else {}
-                    card_baggage_info = BaggageDataExtractor.extract_and_clean_baggage_data(
+                    card_baggage_info = self.baggage_extractor.extract_and_clean_baggage_data(
                         card, self.driver, current_flight_details
                     )
 
@@ -155,7 +158,7 @@ class FlightDataCollector:
                     )
                     self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", price_strong)
                     self.driver.execute_script("arguments[0].click();", price_strong)
-                    price_extracted = PriceDataExtractor.extract_and_clean_price_data(card)
+                    price_extracted = self.price_extractor.extract_and_clean_price_data(card)
 
                     # 點擊背景遮罩復原彈出視窗
                     overlay = self.driver.find_element(By.CSS_SELECTOR, ".ui-widget-overlay.ui-front")
