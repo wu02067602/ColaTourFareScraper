@@ -2,7 +2,6 @@
 import re
 import time
 from datetime import datetime, timedelta
-from typing import Dict, List
 
 # 第三方庫
 from selenium import webdriver
@@ -51,11 +50,8 @@ class DateTimeParser:
         # 去除括號中的星期
         cleaned = re.sub(r"\([^)]*\)", "", text).strip()
         # 期望格式: MM/DD HH:MM
-        try:
-            dt = datetime.strptime(f"{year}/" + cleaned, "%Y/%m/%d %H:%M")
-            return dt
-        except Exception as exc:
-            raise ValueError(f"無法解析日期時間: {text}") from exc
+        dt = datetime.strptime(f"{year}/" + cleaned, "%Y/%m/%d %H:%M")
+        return dt
 
     @staticmethod
     def parse_duration_to_timedelta(text: str) -> timedelta:
@@ -240,19 +236,6 @@ class FlightDataExtractor:
         ValueError: 當資料擷取失敗時
     """
     
-    def __init__(self):
-        """
-        初始化航班資料擷取器。
-        
-        Examples:
-            >>> extractor = FlightDataExtractor()
-        
-        Raises:
-            無特定錯誤
-        """
-        self.datetime_parser = DateTimeParser()
-        self.flight_parser = FlightDataParser()
-    
     def extract_and_clean_flight_data(
         self,
         card: webdriver.remote.webelement.WebElement,
@@ -340,7 +323,7 @@ class FlightDataExtractor:
                         flight_and_cabin_text = candidates[-1]
                         break
                     time.sleep(0.2)
-                flight_no, cabin_and_code = self.flight_parser.parse_flight_and_cabin(flight_and_cabin_text)
+                flight_no, cabin_and_code = FlightDataParser.parse_flight_and_cabin(flight_and_cabin_text)
 
                 # cell_3: 出發資訊
                 dep_airport = ""
@@ -348,14 +331,14 @@ class FlightDataExtractor:
                 cell3 = tr.find_element(By.CSS_SELECTOR, "td.cell_3")
                 cell3_ps = [p.text.strip() for p in cell3.find_elements(By.TAG_NAME, "p")]
                 if cell3_ps:
-                    dep_airport = self.flight_parser.extract_iata(cell3_ps[0]) or dep_airport
+                    dep_airport = FlightDataParser.extract_iata(cell3_ps[0]) or dep_airport
                     time_line = None
                     for t in cell3_ps:
                         if re.search(r"\d{1,2}/\d{1,2}.*\d{1,2}:\d{2}", t):
                             time_line = t
                             break
                     if time_line:
-                        dep_dt = self.datetime_parser.parse_date_time(time_line, assumed_year)
+                        dep_dt = DateTimeParser.parse_date_time(time_line, assumed_year)
 
                 # cell_5: 抵達資訊
                 arr_airport = ""
@@ -363,14 +346,14 @@ class FlightDataExtractor:
                 cell5 = tr.find_element(By.CSS_SELECTOR, "td.cell_5")
                 cell5_ps = [p.text.strip() for p in cell5.find_elements(By.TAG_NAME, "p")]
                 if cell5_ps:
-                    arr_airport = self.flight_parser.extract_iata(cell5_ps[0]) or arr_airport
+                    arr_airport = FlightDataParser.extract_iata(cell5_ps[0]) or arr_airport
                     time_line = None
                     for t in cell5_ps:
                         if re.search(r"\d{1,2}/\d{1,2}.*\d{1,2}:\d{2}", t):
                             time_line = t
                             break
                     if time_line:
-                        arr_dt = self.datetime_parser.parse_date_time(time_line, assumed_year)
+                        arr_dt = DateTimeParser.parse_date_time(time_line, assumed_year)
 
                 # cell_6: 機型與飛行時間
                 equipment_text = ""
@@ -380,7 +363,7 @@ class FlightDataExtractor:
                 if cell6_ps:
                     dur_line = next((t for t in cell6_ps if re.search(r"\d+\s*小時|\d+\s*分", t)), "")
                     if dur_line:
-                        duration_td = self.datetime_parser.parse_duration_to_timedelta(dur_line)
+                        duration_td = DateTimeParser.parse_duration_to_timedelta(dur_line)
                         equipment_text = next((t for t in cell6_ps if t != dur_line), equipment_text)
                     else:
                         equipment_text = cell6_ps[0]
@@ -390,9 +373,9 @@ class FlightDataExtractor:
                 record[f"{direction}艙等與艙等編碼{idx}"] = cabin_and_code
                 record[f"{direction}起飛機場{idx}"] = dep_airport
                 record[f"{direction}降落機場{idx}"] = arr_airport
-                dep_str = self.datetime_parser.format_datetime_to_string(dep_dt)
-                arr_str = self.datetime_parser.format_datetime_to_string(arr_dt)
-                dur_str = self.datetime_parser.format_timedelta_to_hhmm(duration_td)
+                dep_str = DateTimeParser.format_datetime_to_string(dep_dt)
+                arr_str = DateTimeParser.format_datetime_to_string(arr_dt)
+                dur_str = DateTimeParser.format_timedelta_to_hhmm(duration_td)
                 record[f"{direction}起飛時間{idx}"] = dep_str
                 record[f"{direction}降落時間{idx}"] = arr_str
                 record[f"{direction}飛機公司及型號{idx}"] = equipment_text
