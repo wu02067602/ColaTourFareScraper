@@ -236,6 +236,452 @@ class FlightDataExtractor:
         ValueError: 當資料擷取失敗時
     """
     
+    def _validate_extract_parameters(
+        self,
+        card: webdriver.remote.webelement.WebElement,
+        start_date: str,
+        return_date: str
+    ) -> tuple[int, int]:
+        """
+        驗證 extract_and_clean_flight_data 的輸入參數，並解析年份。
+        
+        Args:
+            card: 航班卡片根元素
+            start_date: 去程日期，格式 'YYYY/MM/DD'
+            return_date: 回程日期，格式 'YYYY/MM/DD'
+        
+        Returns:
+            tuple[int, int]: (去程年份, 回程年份)
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> year_out, year_in = extractor._validate_extract_parameters(card, "2025/10/15", "2025/10/20")
+            >>> year_out
+            2025
+        
+        Raises:
+            ValueError: 當 card 為 None 時
+            ValueError: 當日期格式無效時
+            IndexError: 當日期字串無法正確分割時
+        """
+        if card is None:
+            raise ValueError("card 不可為 None")
+        
+        if not start_date or not isinstance(start_date, str):
+            raise ValueError("start_date 必須為非空字串")
+        
+        if not return_date or not isinstance(return_date, str):
+            raise ValueError("return_date 必須為非空字串")
+        
+        try:
+            year_outbound = int(start_date.split("/")[0])
+        except (IndexError, ValueError) as e:
+            raise ValueError(f"start_date 格式無效，期望 'YYYY/MM/DD'，實際為 '{start_date}'") from e
+        
+        try:
+            year_inbound = int(return_date.split("/")[0])
+        except (IndexError, ValueError) as e:
+            raise ValueError(f"return_date 格式無效，期望 'YYYY/MM/DD'，實際為 '{return_date}'") from e
+        
+        return year_outbound, year_inbound
+    
+    def _initialize_flight_record(self) -> dict:
+        """
+        初始化航班記錄的所有欄位。
+        
+        Returns:
+            dict: 包含所有航班欄位的空字典，每個方向（去程/回程）各有3個航段的欄位
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> record = extractor._initialize_flight_record()
+            >>> record["去程航班編號1"]
+            ''
+            >>> len([k for k in record.keys() if k.startswith("去程")])
+            24
+        
+        Raises:
+            無特定錯誤
+        """
+        record = {}
+        for direction in ["去程", "回程"]:
+            for i in range(1, 4):
+                record[f"{direction}航班編號{i}"] = ""
+                record[f"{direction}艙等與艙等編碼{i}"] = ""
+                record[f"{direction}起飛機場{i}"] = ""
+                record[f"{direction}降落機場{i}"] = ""
+                record[f"{direction}起飛時間{i}"] = ""
+                record[f"{direction}降落時間{i}"] = ""
+                record[f"{direction}飛機公司及型號{i}"] = ""
+                record[f"{direction}飛行時間{i}"] = ""
+        return record
+    
+    def _determine_flight_direction(
+        self,
+        outer_table: webdriver.remote.webelement.WebElement,
+        table_index: int
+    ) -> str:
+        """
+        判斷航班表格是去程還是回程。
+        
+        優先順序：
+        1. 標題中包含「回程」字樣
+        2. class 屬性中包含 "return_line"
+        3. 根據表格索引判斷（索引 1 為回程，索引 0 為去程）
+        
+        Args:
+            outer_table: 航班表格元素
+            table_index: 表格在列表中的索引（0 或 1）
+        
+        Returns:
+            str: "去程" 或 "回程"
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> direction = extractor._determine_flight_direction(table, 0)
+            >>> direction in ["去程", "回程"]
+            True
+        
+        Raises:
+            ValueError: 當 outer_table 為 None 時
+        """
+        if outer_table is None:
+            raise ValueError("outer_table 不可為 None")
+        
+        outer_class = outer_table.get_attribute("class") or ""
+        
+        # 優先檢查標題是否包含「回程」
+        has_return_title = len(outer_table.find_elements(
+            By.XPATH,
+            ".//p[contains(@class,'detail_title') and contains(.,'回程')] | "
+            ".//p[contains(@class,'desktop_detail_title') and contains(.,'回程')]"
+        )) > 0
+        
+        if has_return_title or "return_line" in outer_class:
+            return "回程"
+        
+        # 後備方案：根據索引判斷
+        return "回程" if table_index == 1 else "去程"
+    
+    def _find_segment_rows(
+        self,
+        outer_table: webdriver.remote.webelement.WebElement
+    ) -> list:
+        """
+        從航班表格中找出所有有效的航段資料列（排除轉機灰條）。
+        
+        使用兩階段策略：
+        1. 首先嘗試精確的 XPath 篩選
+        2. 如果沒有結果，使用較寬鬆的後備 XPath
+        
+        Args:
+            outer_table: 航班外層表格元素
+        
+        Returns:
+            list: 包含航段資料的 WebElement 列表
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> rows = extractor._find_segment_rows(table)
+            >>> len(rows) >= 0
+            True
+        
+        Raises:
+            ValueError: 當 outer_table 為 None 時
+        """
+        if outer_table is None:
+            raise ValueError("outer_table 不可為 None")
+        
+        # 嘗試精確的 XPath（排除灰條和轉機停留行）
+        rows = outer_table.find_elements(
+            By.XPATH,
+            ".//tr[not(contains(concat(' ', normalize-space(@class), ' '), ' flightDetails_gray ')) and "
+            "not(contains(concat(' ', normalize-space(@class), ' '), ' middleStay ')) and "
+            "td[contains(concat(' ', normalize-space(@class), ' '), ' cell_2 ') and "
+            "contains(concat(' ', normalize-space(@class), ' '), ' b-box ')]]"
+        )
+        
+        # 後備方案：使用較寬鬆的篩選條件
+        if not rows:
+            rows = outer_table.find_elements(
+                By.XPATH,
+                ".//tr[not(contains(@class,'flightDetails_gray')) and "
+                "(td[contains(@class,'cell_2')] or td[contains(@class,'cell_3')] or td[contains(@class,'cell_5')])]"
+            )
+        
+        return rows
+    
+    def _extract_flight_and_cabin_info(
+        self,
+        row: webdriver.remote.webelement.WebElement
+    ) -> tuple[str, str]:
+        """
+        從航段行的 cell_2 提取航班編號和艙等資訊。
+        
+        包含重試機制，最多嘗試 3 次，每次間隔 0.2 秒。
+        
+        Args:
+            row: 航段資料行元素
+        
+        Returns:
+            tuple[str, str]: (航班編號, 艙等與艙等編碼)
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> flight_no, cabin = extractor._extract_flight_and_cabin_info(row)
+            >>> isinstance(flight_no, str) and isinstance(cabin, str)
+            True
+        
+        Raises:
+            ValueError: 當 row 為 None 時
+            NoSuchElementException: 當找不到 cell_2 元素時
+        """
+        if row is None:
+            raise ValueError("row 不可為 None")
+        
+        cell2 = row.find_element(By.CSS_SELECTOR, "td.cell_2")
+        flight_and_cabin_text = ""
+        
+        # 重試機制：嘗試三次提取航班資訊
+        for _ in range(3):
+            p_texts = [p.text.strip() for p in cell2.find_elements(By.TAG_NAME, "p") if p.text.strip()]
+            candidates = [t for t in p_texts if re.search(r"[A-Z0-9]{2,3}\s?\d+", t)]
+            if candidates:
+                flight_and_cabin_text = candidates[-1]
+                break
+            time.sleep(0.2)
+        
+        return FlightDataParser.parse_flight_and_cabin(flight_and_cabin_text)
+    
+    def _extract_airport_and_time(
+        self,
+        row: webdriver.remote.webelement.WebElement,
+        cell_class: str,
+        assumed_year: int
+    ) -> tuple[str, datetime | None]:
+        """
+        從航段行的指定 cell 提取機場代碼和時間。
+        
+        通用函數，可用於提取出發資訊（cell_3）或抵達資訊（cell_5）。
+        
+        Args:
+            row: 航段資料行元素
+            cell_class: CSS class 名稱（如 "cell_3" 或 "cell_5"）
+            assumed_year: 假定的年份用於日期解析
+        
+        Returns:
+            tuple[str, datetime | None]: (機場 IATA 代碼, 日期時間物件)
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> airport, dt = extractor._extract_airport_and_time(row, "cell_3", 2025)
+            >>> isinstance(airport, str)
+            True
+        
+        Raises:
+            ValueError: 當 row 為 None 或 cell_class 為空時
+            NoSuchElementException: 當找不到指定 cell 時
+        """
+        if row is None:
+            raise ValueError("row 不可為 None")
+        if not cell_class:
+            raise ValueError("cell_class 不可為空")
+        
+        airport = ""
+        dt = None
+        
+        cell = row.find_element(By.CSS_SELECTOR, f"td.{cell_class}")
+        cell_ps = [p.text.strip() for p in cell.find_elements(By.TAG_NAME, "p")]
+        
+        if cell_ps:
+            # 從第一行提取機場代碼
+            airport = FlightDataParser.extract_iata(cell_ps[0]) or airport
+            
+            # 尋找包含日期時間的行
+            time_line = None
+            for t in cell_ps:
+                if re.search(r"\d{1,2}/\d{1,2}.*\d{1,2}:\d{2}", t):
+                    time_line = t
+                    break
+            
+            if time_line:
+                dt = DateTimeParser.parse_date_time(time_line, assumed_year)
+        
+        return airport, dt
+    
+    def _extract_equipment_and_duration(
+        self,
+        row: webdriver.remote.webelement.WebElement
+    ) -> tuple[str, timedelta]:
+        """
+        從航段行的 cell_6 提取機型和飛行時間。
+        
+        策略：
+        1. 尋找包含「小時」或「分」的文字作為飛行時間
+        2. 其他文字視為機型資訊
+        3. 如果沒有飛行時間，第一行文字視為機型
+        
+        Args:
+            row: 航段資料行元素
+        
+        Returns:
+            tuple[str, timedelta]: (機型文字, 飛行時間)
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> equipment, duration = extractor._extract_equipment_and_duration(row)
+            >>> isinstance(equipment, str) and isinstance(duration, timedelta)
+            True
+        
+        Raises:
+            ValueError: 當 row 為 None 時
+            NoSuchElementException: 當找不到 cell_6 元素時
+        """
+        if row is None:
+            raise ValueError("row 不可為 None")
+        
+        equipment_text = ""
+        duration_td = timedelta(0)
+        
+        cell6 = row.find_element(By.CSS_SELECTOR, "td.cell_6")
+        cell6_ps = [p.text.strip() for p in cell6.find_elements(By.TAG_NAME, "p") if p.text.strip()]
+        
+        if cell6_ps:
+            # 尋找飛行時間（包含「小時」或「分」的文字）
+            dur_line = next((t for t in cell6_ps if re.search(r"\d+\s*小時|\d+\s*分", t)), "")
+            
+            if dur_line:
+                duration_td = DateTimeParser.parse_duration_to_timedelta(dur_line)
+                # 機型是非飛行時間的那一行
+                equipment_text = next((t for t in cell6_ps if t != dur_line), equipment_text)
+            else:
+                # 沒有飛行時間，第一行當作機型
+                equipment_text = cell6_ps[0]
+        
+        return equipment_text, duration_td
+    
+    def _extract_segment_data(
+        self,
+        row: webdriver.remote.webelement.WebElement,
+        assumed_year: int
+    ) -> dict:
+        """
+        從單個航段行提取完整的航段資訊。
+        
+        整合所有提取函數，從航段行中提取：
+        - 航班編號和艙等（cell_2）
+        - 出發機場和時間（cell_3）
+        - 抵達機場和時間（cell_5）
+        - 機型和飛行時間（cell_6）
+        
+        Args:
+            row: 航段資料行元素
+            assumed_year: 假定的年份用於日期解析
+        
+        Returns:
+            dict: 包含航段所有資訊的字典
+                - flight_no: 航班編號
+                - cabin_and_code: 艙等與艙等編碼
+                - dep_airport: 出發機場
+                - arr_airport: 抵達機場
+                - dep_time: 出發時間（字串格式）
+                - arr_time: 抵達時間（字串格式）
+                - equipment: 機型
+                - duration: 飛行時間（字串格式）
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> segment = extractor._extract_segment_data(row, 2025)
+            >>> "flight_no" in segment and "dep_airport" in segment
+            True
+        
+        Raises:
+            ValueError: 當 row 為 None 時
+            NoSuchElementException: 當找不到必要的 cell 元素時
+        """
+        if row is None:
+            raise ValueError("row 不可為 None")
+        
+        # 提取航班和艙等
+        flight_no, cabin_and_code = self._extract_flight_and_cabin_info(row)
+        
+        # 提取出發資訊
+        dep_airport, dep_dt = self._extract_airport_and_time(row, "cell_3", assumed_year)
+        
+        # 提取抵達資訊
+        arr_airport, arr_dt = self._extract_airport_and_time(row, "cell_5", assumed_year)
+        
+        # 提取機型和飛行時間
+        equipment_text, duration_td = self._extract_equipment_and_duration(row)
+        
+        # 格式化日期時間
+        dep_str = DateTimeParser.format_datetime_to_string(dep_dt)
+        arr_str = DateTimeParser.format_datetime_to_string(arr_dt)
+        dur_str = DateTimeParser.format_timedelta_to_hhmm(duration_td)
+        
+        return {
+            "flight_no": flight_no,
+            "cabin_and_code": cabin_and_code,
+            "dep_airport": dep_airport,
+            "arr_airport": arr_airport,
+            "dep_time": dep_str,
+            "arr_time": arr_str,
+            "equipment": equipment_text,
+            "duration": dur_str
+        }
+    
+    def _write_segment_to_record(
+        self,
+        record: dict,
+        segment_data: dict,
+        direction: str,
+        segment_index: int
+    ) -> None:
+        """
+        將航段資料寫入記錄字典。
+        
+        根據方向（去程/回程）和航段索引（1-3），將航段資料寫入對應的欄位。
+        
+        Args:
+            record: 要寫入的記錄字典
+            segment_data: 航段資料字典（由 _extract_segment_data 產生）
+            direction: 航班方向（"去程" 或 "回程"）
+            segment_index: 航段索引（1、2 或 3）
+        
+        Returns:
+            None（直接修改 record 字典）
+        
+        Examples:
+            >>> extractor = FlightDataExtractor()
+            >>> record = extractor._initialize_flight_record()
+            >>> segment_data = {"flight_no": "UA852", "cabin_and_code": "經濟艙K", ...}
+            >>> extractor._write_segment_to_record(record, segment_data, "去程", 1)
+            >>> record["去程航班編號1"]
+            'UA852'
+        
+        Raises:
+            ValueError: 當 record 為 None 或 segment_data 為 None 時
+            ValueError: 當 direction 不是 "去程" 或 "回程" 時
+            ValueError: 當 segment_index 不在 1-3 範圍內時
+        """
+        if record is None:
+            raise ValueError("record 不可為 None")
+        if segment_data is None:
+            raise ValueError("segment_data 不可為 None")
+        if direction not in ["去程", "回程"]:
+            raise ValueError(f"direction 必須為 '去程' 或 '回程'，實際為 '{direction}'")
+        if not 1 <= segment_index <= 3:
+            raise ValueError(f"segment_index 必須在 1-3 範圍內，實際為 {segment_index}")
+        
+        record[f"{direction}航班編號{segment_index}"] = segment_data["flight_no"]
+        record[f"{direction}艙等與艙等編碼{segment_index}"] = segment_data["cabin_and_code"]
+        record[f"{direction}起飛機場{segment_index}"] = segment_data["dep_airport"]
+        record[f"{direction}降落機場{segment_index}"] = segment_data["arr_airport"]
+        record[f"{direction}起飛時間{segment_index}"] = segment_data["dep_time"]
+        record[f"{direction}降落時間{segment_index}"] = segment_data["arr_time"]
+        record[f"{direction}飛機公司及型號{segment_index}"] = segment_data["equipment"]
+        record[f"{direction}飛行時間{segment_index}"] = segment_data["duration"]
+    
     def extract_and_clean_flight_data(
         self,
         card: webdriver.remote.webelement.WebElement,
@@ -244,6 +690,8 @@ class FlightDataExtractor:
     ) -> list:
         """
         自單張航班卡片的「航班明細」區塊抽取並清洗資料。
+        
+        此函數作為流程控制器，協調各個輔助函數完成資料提取任務。
 
         Args:
             card (webdriver.remote.webelement.WebElement): 航班卡片根元素。
@@ -262,129 +710,49 @@ class FlightDataExtractor:
         Raises:
             ValueError: 當 card 為 None 或日期格式無效時
         """
-        if card is None:
-            raise ValueError("card 不可為 None")
+        # 步驟 1: 驗證參數並解析年份
+        year_outbound, year_inbound = self._validate_extract_parameters(
+            card, start_date, return_date
+        )
         
-        results = []
-        year_outbound = int(start_date.split("/")[0])
-        year_inbound = int(return_date.split("/")[0])
-
-        # 初始化欄位
-        record = {}
-        for d in ["去程", "回程"]:
-            for i in range(1, 4):
-                record[f"{d}航班編號{i}"] = ""
-                record[f"{d}艙等與艙等編碼{i}"] = ""
-                record[f"{d}起飛機場{i}"] = ""
-                record[f"{d}降落機場{i}"] = ""
-                record[f"{d}起飛時間{i}"] = ""
-                record[f"{d}降落時間{i}"] = ""
-                record[f"{d}飛機公司及型號{i}"] = ""
-                record[f"{d}飛行時間{i}"] = ""
-
+        # 步驟 2: 初始化記錄結構
+        record = self._initialize_flight_record()
         segment_index = {"去程": 1, "回程": 1}
-
-        # 取得去程/回程外層表格
+        
+        # 步驟 3: 取得去程/回程外層表格
         outer_tables = card.find_elements(By.CSS_SELECTOR, "table.flightDetails_table")
-        for idx, outer in enumerate(outer_tables):
-            outer_class = outer.get_attribute("class") or ""
-            # 標題優先，其次 class，最後索引後備
-            has_return_title = len(outer.find_elements(By.XPATH, ".//p[contains(@class,'detail_title') and contains(.,'回程')] | .//p[contains(@class,'desktop_detail_title') and contains(.,'回程')]")) > 0
-            if has_return_title or "return_line" in outer_class:
-                direction = "回程"
-            else:
-                direction = "回程" if idx == 1 else "去程"
+        
+        # 步驟 4: 遍歷每個表格（去程/回程）
+        for idx, outer_table in enumerate(outer_tables):
+            # 步驟 4.1: 判斷航班方向
+            direction = self._determine_flight_direction(outer_table, idx)
             assumed_year = year_inbound if direction == "回程" else year_outbound
-
-            # 只抓取真正的航段資料列（排除轉機灰條）
-            rows = outer.find_elements(
-                By.XPATH,
-                ".//tr[not(contains(concat(' ', normalize-space(@class), ' '), ' flightDetails_gray ')) and "
-                "not(contains(concat(' ', normalize-space(@class), ' '), ' middleStay ')) and "
-                "td[contains(concat(' ', normalize-space(@class), ' '), ' cell_2 ') and "
-                "contains(concat(' ', normalize-space(@class), ' '), ' b-box ')]]"
-            )
-            if not rows:
-                rows = outer.find_elements(
-                    By.XPATH,
-                    ".//tr[not(contains(@class,'flightDetails_gray')) and (td[contains(@class,'cell_2')] or td[contains(@class,'cell_3')] or td[contains(@class,'cell_5')])]"
-                )
-            for tr in rows:
+            
+            # 步驟 4.2: 抓取航段資料列
+            rows = self._find_segment_rows(outer_table)
+            
+            # 步驟 4.3: 處理每個航段
+            for row in rows:
+                # 限制每個方向最多 3 個航段
                 if segment_index[direction] > 3:
                     continue
-
-                # cell_2: 航空與航班資訊
-                cell2 = tr.find_element(By.CSS_SELECTOR, "td.cell_2")
-                flight_and_cabin_text = ""
-                for _ in range(3):
-                    p_texts = [p.text.strip() for p in cell2.find_elements(By.TAG_NAME, "p") if p.text.strip()]
-                    candidates = [t for t in p_texts if re.search(r"[A-Z0-9]{2,3}\s?\d+", t)]
-                    if candidates:
-                        flight_and_cabin_text = candidates[-1]
-                        break
-                    time.sleep(0.2)
-                flight_no, cabin_and_code = FlightDataParser.parse_flight_and_cabin(flight_and_cabin_text)
-
-                # cell_3: 出發資訊
-                dep_airport = ""
-                dep_dt = None
-                cell3 = tr.find_element(By.CSS_SELECTOR, "td.cell_3")
-                cell3_ps = [p.text.strip() for p in cell3.find_elements(By.TAG_NAME, "p")]
-                if cell3_ps:
-                    dep_airport = FlightDataParser.extract_iata(cell3_ps[0]) or dep_airport
-                    time_line = None
-                    for t in cell3_ps:
-                        if re.search(r"\d{1,2}/\d{1,2}.*\d{1,2}:\d{2}", t):
-                            time_line = t
-                            break
-                    if time_line:
-                        dep_dt = DateTimeParser.parse_date_time(time_line, assumed_year)
-
-                # cell_5: 抵達資訊
-                arr_airport = ""
-                arr_dt = None
-                cell5 = tr.find_element(By.CSS_SELECTOR, "td.cell_5")
-                cell5_ps = [p.text.strip() for p in cell5.find_elements(By.TAG_NAME, "p")]
-                if cell5_ps:
-                    arr_airport = FlightDataParser.extract_iata(cell5_ps[0]) or arr_airport
-                    time_line = None
-                    for t in cell5_ps:
-                        if re.search(r"\d{1,2}/\d{1,2}.*\d{1,2}:\d{2}", t):
-                            time_line = t
-                            break
-                    if time_line:
-                        arr_dt = DateTimeParser.parse_date_time(time_line, assumed_year)
-
-                # cell_6: 機型與飛行時間
-                equipment_text = ""
-                duration_td = timedelta(0)
-                cell6 = tr.find_element(By.CSS_SELECTOR, "td.cell_6")
-                cell6_ps = [p.text.strip() for p in cell6.find_elements(By.TAG_NAME, "p") if p.text.strip()]
-                if cell6_ps:
-                    dur_line = next((t for t in cell6_ps if re.search(r"\d+\s*小時|\d+\s*分", t)), "")
-                    if dur_line:
-                        duration_td = DateTimeParser.parse_duration_to_timedelta(dur_line)
-                        equipment_text = next((t for t in cell6_ps if t != dur_line), equipment_text)
-                    else:
-                        equipment_text = cell6_ps[0]
-
-                idx = segment_index[direction]
-                record[f"{direction}航班編號{idx}"] = flight_no
-                record[f"{direction}艙等與艙等編碼{idx}"] = cabin_and_code
-                record[f"{direction}起飛機場{idx}"] = dep_airport
-                record[f"{direction}降落機場{idx}"] = arr_airport
-                dep_str = DateTimeParser.format_datetime_to_string(dep_dt)
-                arr_str = DateTimeParser.format_datetime_to_string(arr_dt)
-                dur_str = DateTimeParser.format_timedelta_to_hhmm(duration_td)
-                record[f"{direction}起飛時間{idx}"] = dep_str
-                record[f"{direction}降落時間{idx}"] = arr_str
-                record[f"{direction}飛機公司及型號{idx}"] = equipment_text
-                record[f"{direction}飛行時間{idx}"] = dur_str
-
+                
+                # 步驟 4.3.1: 提取航段資料
+                segment_data = self._extract_segment_data(row, assumed_year)
+                
+                # 步驟 4.3.2: 將航段資料寫入記錄
+                self._write_segment_to_record(
+                    record,
+                    segment_data,
+                    direction,
+                    segment_index[direction]
+                )
+                
+                # 步驟 4.3.3: 遞增航段索引
                 segment_index[direction] += 1
-
-        results.append(record)
-        return results
+        
+        # 步驟 5: 返回結果
+        return [record]
 
 
 class PriceDataExtractor:
