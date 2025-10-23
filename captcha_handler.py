@@ -124,13 +124,21 @@ class ImageProcessor:
         if target_height <= 0 or target_width <= 0:
             raise ValueError("target_height 和 target_width 必須大於 0")
         
+        # 開啟圖像並轉換為灰階
         image = Image.open(image_path)
         gray_image = image.convert('L')
         image_array = np.array(gray_image)
+        
+        # 計算每列非白色像素的數量
         non_white_pixels_per_column = np.sum(image_array != self.WHITE_PIXEL_VALUE, axis=0)
+        
+        # 計算非白色像素的平均值（減去標準差的 25% 作為閾值調整）
         average_non_white_pixels = np.mean(non_white_pixels_per_column) - 0.25 * (np.std(non_white_pixels_per_column))
+        
+        # 找出超過平均值的列索引
         columns_above_average = np.where(non_white_pixels_per_column > average_non_white_pixels)[0]
         
+        # 將連續的列索引分組為範圍
         continuous_ranges = []
         start = columns_above_average[0]
         for i in range(1, len(columns_above_average)):
@@ -139,9 +147,11 @@ class ImageProcessor:
                 start = columns_above_average[i]
         continuous_ranges.append((start, columns_above_average[-1]))
         
+        # 依範圍大小排序，取前 4 個最大的範圍
         sorted_data = sorted(continuous_ranges, key=lambda x: abs(x[1] - x[0]), reverse=True)
         continuous_ranges = sorted(sorted_data[:4])
         
+        # 計算 4 個範圍之間的中點，重新定義邊界
         updated_ranges = [
             (0, self.calculate_midpoint(continuous_ranges[0], continuous_ranges[1])),
             (self.calculate_midpoint(continuous_ranges[0], continuous_ranges[1]), self.calculate_midpoint(continuous_ranges[1], continuous_ranges[2])),
@@ -150,14 +160,20 @@ class ImageProcessor:
         ]
         continuous_ranges = updated_ranges
         
+        # 轉換為 RGB 格式並裁剪圖像
         rgb_image = image.convert('RGB')
         cropped_images = []
         for start, end in continuous_ranges:
+            # 裁剪出單個字符區域
             cropped_image = rgb_image.crop((start, 0, end, rgb_image.height))
+            
+            # 創建白色背景並將裁剪的圖像貼上
             new_width = 100
             background = Image.new('RGB', (new_width, target_height), (255, 255, 255))
             paste_position = (new_width - target_width, 0)
             background.paste(cropped_image, paste_position)
+            
+            # 將處理後的圖像轉換為數組並加入列表
             cropped_images.append(img_to_array(background))
         
         return cropped_images
