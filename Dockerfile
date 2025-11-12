@@ -51,5 +51,5 @@ RUN pip install chromedriver-autoinstaller
 # 讓連接埠 80 可供此容器外的環境使用
 EXPOSE 80
 
-# 在容器啟動時啟動 Xvfb 和執行 colatour_fetch_data.py
-CMD ["sh", "-c", "Xvfb :99 -ac & python colatour_fetch_data.py"]
+# 在容器啟動時啟動 Xvfb 和執行 main.py
+CMD ["sh", "-c", "Xvfb :99 -ac & python main.py"]

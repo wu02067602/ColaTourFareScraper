@@ -43,7 +43,7 @@ steps:
         --service-account ${_SERVICE_ACCOUNT} \
         --set-env-vars PROJECT_ID=${PROJECT_ID} \
         --set-env-vars IATA_ID=HND
-
+  
 - name: 'gcr.io/cloud-builders/gcloud'
   entrypoint: 'sh'
   args:
